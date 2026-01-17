@@ -14,11 +14,10 @@ import QuickActionButton from '../components/ui/QuickActionButton';
 import ActionButton from '../components/ui/ActionButton';
 import BottomNav from '../components/navigation/BottomNav';
 
-const InitialScreen = ({ onNavigate }) => {
+const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
   const [activeRoute, setActiveRoute] = useState('inicial');
 
   // Dados de exemplo
-  const userName = 'CK';
   
   const upcomingEvents = [
     {

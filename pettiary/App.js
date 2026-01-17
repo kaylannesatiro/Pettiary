@@ -27,14 +27,15 @@ const theme = {
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('inicial');
+  const [userName, setUserName] = useState('CK');
 
   const renderScreen = () => {
     switch (currentScreen) {
       case 'configuracoes':
-        return <ConfigScreen onNavigate={setCurrentScreen} />;
+        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
       case 'inicial':
       default:
-        return <InitialScreen onNavigate={setCurrentScreen} />;
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
     }
   };
 

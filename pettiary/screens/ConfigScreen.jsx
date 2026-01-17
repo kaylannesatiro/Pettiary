@@ -15,34 +15,13 @@ import EditProfileModal from '../components/ui/EditProfileModal';
 import ChangePasswordModal from '../components/ui/ChangePasswordModal';
 import { userService } from '../services/userService';
 
-const ConfigScreen = ({ onNavigate }) => {
+const ConfigScreen = ({ onNavigate, userName, setUserName }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [activeRoute, setActiveRoute] = useState('configuracoes');
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
-  const [userName, setUserName] = useState('CK');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    loadUserProfile();
-  }, []);
-
-  const loadUserProfile = async () => {
-    try {
-      setLoading(true);
-      // Simular carregamento do perfil
-      // const response = await userService.getProfile();
-      // if (response.data) {
-      //   setUserName(response.data.name);
-      // }
-      setUserName('CK');
-    } catch (error) {
-      console.error('Erro ao carregar perfil:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSaveProfile = async (newName) => {
     try {
@@ -79,27 +58,39 @@ const ConfigScreen = ({ onNavigate }) => {
     console.log('Navegando para:', route);
   };
 
-  const MenuItem = ({ icon, label, onPress, showArrow = false, showSwitch = false, switchValue, onSwitchChange }) => (
-    <TouchableOpacity 
-      style={styles.menuItem}
-      onPress={onPress}
-      activeOpacity={0.7}
-      disabled={showSwitch}
-    >
-      <View style={styles.menuItemLeft}>
-        {icon && <MaterialIcons name={icon} size={24} color="#563218" style={styles.menuIcon} />}
-        <Text style={styles.menuLabel}>{label}</Text>
-      </View>
-      {showArrow && <MaterialIcons name="chevron-right" size={24} color="#9B7653" />}
-      {showSwitch && (
-        <Switch 
-          value={switchValue} 
-          onValueChange={onSwitchChange}
-          color="#9B7653"
-        />
-      )}
-    </TouchableOpacity>
-  );
+  const MenuItem = ({ icon, label, onPress, showArrow = false, showSwitch = false, switchValue, onSwitchChange }) => {
+    if (showSwitch) {
+      return (
+        <View style={styles.menuItem}>
+          <View style={styles.menuItemLeft}>
+            {icon && <MaterialIcons name={icon} size={24} color="#563218" style={styles.menuIcon} />}
+            <Text style={styles.menuLabel}>{label}</Text>
+          </View>
+          <Switch 
+            value={switchValue} 
+            onValueChange={(value) => onSwitchChange(value)}
+            trackColor={{ false: '#D5C0AB', true: '#9B7653' }}
+            thumbColor={switchValue ? '#E1D8CF' : '#F5F0E8'}
+            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+          />
+        </View>
+      );
+    }
+
+    return (
+      <TouchableOpacity 
+        style={styles.menuItem}
+        onPress={onPress}
+        activeOpacity={0.7}
+      >
+        <View style={styles.menuItemLeft}>
+          {icon && <MaterialIcons name={icon} size={24} color="#563218" style={styles.menuIcon} />}
+          <Text style={styles.menuLabel}>{label}</Text>
+        </View>
+        {showArrow && <MaterialIcons name="chevron-right" size={24} color="#9B7653" />}
+      </TouchableOpacity>
+    );
+  };
 
   const SectionTitle = ({ title }) => (
     <Text style={styles.sectionTitle}>{title}</Text>
@@ -156,15 +147,21 @@ const ConfigScreen = ({ onNavigate }) => {
             />
             <MenuItem 
               label="Ativar Modo Escuro"
-              showSwitch
+              showSwitch={true}
               switchValue={darkMode}
-              onSwitchChange={setDarkMode}
+              onSwitchChange={(value) => {
+                console.log('Modo Escuro:', value);
+                setDarkMode(value);
+              }}
             />
             <MenuItem 
               label="Ativar Notificações"
-              showSwitch
+              showSwitch={true}
               switchValue={notifications}
-              onSwitchChange={setNotifications}
+              onSwitchChange={(value) => {
+                console.log('Notificações:', value);
+                setNotifications(value);
+              }}
             />
           </View>
 

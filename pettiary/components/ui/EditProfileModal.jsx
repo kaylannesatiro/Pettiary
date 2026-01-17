@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    backgroundColor: '#F5F0E8',
+    backgroundColor: '#E1D8CF',
   },
   footer: {
     flexDirection: 'row',
