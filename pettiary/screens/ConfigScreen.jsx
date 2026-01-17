@@ -31,10 +31,12 @@ const ConfigScreen = ({ onNavigate }) => {
   const loadUserProfile = async () => {
     try {
       setLoading(true);
-      const response = await userService.getProfile();
-      if (response.data) {
-        setUserName(response.data.name);
-      }
+      // Simular carregamento do perfil
+      // const response = await userService.getProfile();
+      // if (response.data) {
+      //   setUserName(response.data.name);
+      // }
+      setUserName('CK');
     } catch (error) {
       console.error('Erro ao carregar perfil:', error);
     } finally {
@@ -44,23 +46,27 @@ const ConfigScreen = ({ onNavigate }) => {
 
   const handleSaveProfile = async (newName) => {
     try {
-      const response = await userService.updateProfile(1, { name: newName });
-      if (response.data.success) {
-        setUserName(newName);
-        Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
-      }
+      // Simular salvamento do perfil
+      // const response = await userService.updateProfile(1, { name: newName });
+      // if (response.data.success) {
+      setUserName(newName);
+      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
+      // }
     } catch (error) {
+      console.error('Erro ao salvar perfil:', error);
       throw new Error('Erro ao salvar perfil');
     }
   };
 
   const handleChangePassword = async (currentPassword, newPassword) => {
     try {
-      const response = await userService.changePassword(1, currentPassword, newPassword);
-      if (response.data.success) {
-        Alert.alert('Sucesso', 'Senha alterada com sucesso!');
-      }
+      // Simular alteração de senha
+      // const response = await userService.changePassword(1, currentPassword, newPassword);
+      // if (response.data.success) {
+      Alert.alert('Sucesso', 'Senha alterada com sucesso!');
+      // }
     } catch (error) {
+      console.error('Erro ao alterar senha:', error);
       throw new Error(error.response?.data?.error || 'Erro ao alterar senha');
     }
   };
