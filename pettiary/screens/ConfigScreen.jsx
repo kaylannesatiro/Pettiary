@@ -22,7 +22,7 @@ const ConfigScreen = ({ onNavigate }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [userName, setUserName] = useState('CK');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadUserProfile();
@@ -117,15 +117,26 @@ const ConfigScreen = ({ onNavigate }) => {
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
       <View style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <Text variant="headlineMedium" style={styles.headerTitle}>
-            Configurações{userName}</Text>
+            Configurações
+          </Text>
+        </View>
+
+        <ScrollView 
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.profileSection}>
+            <View style={styles.profileIconContainer}>
+              <MaterialIcons name="account-circle" size={48} color="#9B7653" />
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>{userName}</Text>
               <Text style={styles.profileSubtitle}>Configurações da Conta</Text>
             </View>
           </View>
 
-          {/* Menu Principal */}
           <View style={styles.menuSection}>
             <MenuItem 
               label="Editar Perfil"
@@ -135,21 +146,7 @@ const ConfigScreen = ({ onNavigate }) => {
             <MenuItem 
               label="Alterar senha"
               showArrow
-              onPress={() => setPasswordModalVisible(truegurações da Conta</Text>
-            </View>
-          </View>
-
-          {/* Menu Principal */}
-          <View style={styles.menuSection}>
-            <MenuItem 
-              label="Editar Perfil"
-              showArrow
-              onPress={() => console.log('Editar Perfil')}
-            />
-            <MenuItem 
-              label="Alterar senha"
-              showArrow
-              onPress={() => console.log('Alterar senha')}
+              onPress={() => setPasswordModalVisible(true)}
             />
             <MenuItem 
               label="Ativar Modo Escuro"
@@ -165,7 +162,6 @@ const ConfigScreen = ({ onNavigate }) => {
             />
           </View>
 
-          {/* Seção Sobre */}
           <View style={styles.aboutSection}>
             <SectionTitle title="Sobre" />
             <MenuItem 
@@ -182,11 +178,9 @@ const ConfigScreen = ({ onNavigate }) => {
             />
           </View>
 
-          {/* Espaçamento para o bottom nav */}
           <View style={{ height: 20 }} />
         </ScrollView>
 
-        {/* Modals */}
         <EditProfileModal
           visible={editModalVisible}
           onClose={() => setEditModalVisible(false)}
@@ -199,7 +193,6 @@ const ConfigScreen = ({ onNavigate }) => {
           onSave={handleChangePassword}
         />
 
-        {/* Bottom Navigation */}
         <BottomNav 
           activeRoute={activeRoute} 
           onNavigate={handleNavigation} 
@@ -218,16 +211,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E1D8CF',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 12,
-  },
-  loadingText: {
-    fontSize: 16,
-    color: '#7D5E42',
-  },
   header: {
     paddingHorizontal: 20,
     paddingTop: 16,
@@ -240,6 +223,16 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#7D5E42',
   },
   profileSection: {
     flexDirection: 'row',
