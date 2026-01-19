@@ -95,7 +95,15 @@ const RegisteredPetsScreen = () => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
-              Nenhum animal encontrado
+              {searchQuery.trim()
+                ? 'Nenhum animal encontrado com esse nome'
+                : activeFilter === 'favoritos'
+                ? 'Você ainda não marcou nenhum pet como favorito'
+                : activeFilter === 'cachorros'
+                ? 'Nenhum cachorro cadastrado'
+                : activeFilter === 'gatos'
+                ? 'Nenhum gato cadastrado'
+                : 'Nenhum animal cadastrado ainda'}
             </Text>
           </View>
         }
@@ -132,7 +140,15 @@ const styles = StyleSheet.create({
   filterContainer: {
     marginTop: 16,
     marginBottom: 12,
-    paddingHorizontal: 16,
+    backgroundColor: '#E1D8CF',
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#E1D8CF',
+  },
+  scrollContent: {
+    paddingBottom: 16,
+    paddingTop: 8,
   },
   emptyContainer: {
     flex: 1,
@@ -146,6 +162,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Outfit_300Light',
     color: '#6B5544',
     textAlign: 'center',
+    lineHeight: 24,
+  },
+  bottomNav: {
+    backgroundColor: '#563218',
   },
 });
 
