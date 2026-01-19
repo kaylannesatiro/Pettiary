@@ -8,11 +8,11 @@ import {
   StatusBar,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { usePets } from '../contexts/PetsContext';
-import SearchBar from '../components/inputs/SearchBar';
-import Button from '../components/ui/Button';
-import Card from '../components/display/Card';
-import BottomNav from '../components/navigation/BottomNav';
+import { usePets } from '../contexts/Pets.Context';
+import SearchBar from '../inputs/SearchBar';
+import Button from '../ui/Button';
+import Card from '../display/Card';
+import BottomNav from '../navigation/BottomNav';
 
 const RegisteredPetsScreen = () => {
   const insets = useSafeAreaInsets();
