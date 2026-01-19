@@ -72,8 +72,21 @@ export const PetsProvider = ({ children }) => {
       ...newPet,
       id: Date.now().toString(),
       isFavorite: false,
+      diary: []
     };
     setPets(prevPets => [...prevPets, pet]);
+  };
+
+  const removePet = (petId) => {
+    setPets(prevPets => prevPets.filter(pet => pet.id !== petId));
+  };
+
+  const updatePet = (petId, updatedData) => {
+    setPets(prevPets =>
+      prevPets.map(pet =>
+        pet.id === petId ? { ...pet, ...updatedData } : pet
+      )
+    );
   };
 
   const getPetsByType = (type) => {
