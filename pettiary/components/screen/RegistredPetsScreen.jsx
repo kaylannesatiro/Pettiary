@@ -23,13 +23,13 @@ const RegisteredPetsScreen = () => {
 
   const filteredPets = getFilteredPets();
 
-  return (wrapper}>
+  return (
+    <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <Text style={styles.title}>Animais Cadastrados</Text>
-          <Text style={styles.title}>Animais Cadastrados</Text>
-      </View>
+        </View>
 
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
