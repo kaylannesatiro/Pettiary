@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { usePets } from '../contexts/Pets.Context';
+import Button from '../ui/Button';
 
 const RegisteredPetsScreen = () => {
   const { pets } = usePets();
@@ -9,7 +10,26 @@ const RegisteredPetsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Animais Cadastrados</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Animais Cadastrados</Text>
+      </View>
+
+      <View style={styles.filterContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Button
+            title="Todos"
+            variant="filter"
+            selected={activeFilter === 'todos'}
+            onPress={() => setActiveFilter('todos')}
+          />
+          <Button
+            title="Favoritos"
+            variant="filter"
+            selected={activeFilter === 'favoritos'}
+            onPress={() => setActiveFilter('favoritos')}
+          />
+        </ScrollView>
+      </View>
     </View>
   );
 };
