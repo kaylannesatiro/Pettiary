@@ -89,6 +89,20 @@ export const PetsProvider = ({ children }) => {
     );
   };
 
+  const addDiaryEntry = (petId, entry) => {
+    setPets(prevPets =>
+      prevPets.map(pet =>
+        pet.id === petId
+          ? { ...pet, diary: [...pet.diary, { ...entry, id: Date.now().toString() }] }
+          : pet
+      )
+    );
+  };
+
+  const getPetById = (petId) => {
+    return pets.find(pet => pet.id === petId);
+  };
+
   const getPetsByType = (type) => {
     return pets.filter(pet => pet.type === type);
   };
