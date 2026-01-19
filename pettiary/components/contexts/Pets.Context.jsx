@@ -67,8 +67,31 @@ export const PetsProvider = ({ children }) => {
     );
   };
 
+  const getPetsByType = (type) => {
+    return pets.filter(pet => pet.type === type);
+  };
+
+  const getFavoritePets = () => {
+    return pets.filter(pet => pet.isFavorite);
+  };
+
+  const searchPets = (query) => {
+    if (!query) return pets;
+    return pets.filter(pet =>
+      pet.name.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
   return (
-    <PetsContext.Provider value={{ pets, toggleFavorite }}>
+    <PetsContext.Provider 
+      value={{ 
+        pets, 
+        toggleFavorite,
+        getPetsByType,
+        getFavoritePets,
+        searchPets
+      }}
+    >
       {children}
     </PetsContext.Provider>
   );
