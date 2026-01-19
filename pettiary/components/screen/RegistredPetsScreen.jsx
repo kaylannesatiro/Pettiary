@@ -28,6 +28,18 @@ const RegisteredPetsScreen = () => {
             selected={activeFilter === 'favoritos'}
             onPress={() => setActiveFilter('favoritos')}
           />
+          <Button
+            title="Cachorros"
+            variant="filter"
+            selected={activeFilter === 'cachorros'}
+            onPress={() => setActiveFilter('cachorros')}
+          />
+          <Button
+            title="Gatos"
+            variant="filter"
+            selected={activeFilter === 'gatos'}
+            onPress={() => setActiveFilter('gatos')}
+          />
         </ScrollView>
       </View>
     </View>
