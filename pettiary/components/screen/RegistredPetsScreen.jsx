@@ -4,12 +4,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePets } from '../contexts/Pets.Context';
 import SearchBar from '../inputs/SearchBar';
 import Button from '../ui/Button';
+import Card from '../display/Card';
+import BottomNav from '../navigation/BottomNav';
 
 const RegisteredPetsScreen = () => {
   const insets = useSafeAreaInsets();
-  const { pets, getPetsByType, getFavoritePets } = usePets();
+  const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
+  const [activeTab, setActiveTab] = useState('animais');
 
   const getFilteredPets = () => {
     let filteredPets = pets;
@@ -80,10 +83,15 @@ const RegisteredPetsScreen = () => {
         data={filteredPets}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.petItem}>
-            <Text>{item.name}</Text>
-          </View>
+          <Card
+            pet={item}
+            onPress={() => handlePetPress(item)}
+            onToggleFavorite={toggleFavorite}
+          />
         )}
+        style={styles.content}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
@@ -92,6 +100,10 @@ const RegisteredPetsScreen = () => {
           </View>
         }
       />
+      </View>
+      
+      <View style={[styles.bottomNav, { paddingBottom: insets.bottom }]}>
+        <BottomNav activeRoute="animais" onNavigate={handleTabChange} />
       </View>
     </View>
   );
