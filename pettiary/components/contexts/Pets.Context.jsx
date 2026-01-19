@@ -119,12 +119,17 @@ export const PetsProvider = ({ children }) => {
   };
 
   return (
-    <PetsContext.Provider 
-      value={{ 
-        pets, 
+    <PetsContext.Provider
+      value={{
+        pets,
         toggleFavorite,
-        getPetsByType,
+        addPet,
+        removePet,
+        updatePet,
+        addDiaryEntry,
+        getPetById,
         getFavoritePets,
+        getPetsByType,
         searchPets
       }}
     >
