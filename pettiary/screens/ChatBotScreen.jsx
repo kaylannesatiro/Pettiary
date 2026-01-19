@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   View, 
   ScrollView, 
@@ -8,52 +8,105 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+// ⚠️ IMPORTANTE: Adicione sua API Key aqui
+// Obtenha em: https://aistudio.google.com/
+const API_KEY = 'AIzaSyCCDvR0n6hQQ9f4fljzJClXPKqZBo_2y4E';
+
+// Inicializar o Google AI
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 const ChatBotScreen = ({ onClose }) => {
   const [message, setMessage] = useState('');
-
-  // Mensagens de exemplo
-  const messages = [
+  const [messages, setMessages] = useState([
     {
-      id: 1,
+      id: Date.now().toString(),
       text: 'Olá! Eu sou o seu Assistente Virtual 🐾\nEstou aqui para ajudar você a cuidar do seu melhor amigo. O que você gostaria de fazer?',
       isBot: true,
-    },
-    {
-      id: 2,
-      text: 'Oi, boa tarde. Queria umas dicas de qual a melhor ração pro meu cachorro.',
-      isBot: false,
-    },
-    {
-      id: 3,
-      text: 'Opa, claro! Vamos encontrar a ração ideal para ele. Para começar, qual é a raça e a idade dele?',
-      isBot: true,
-    },
-    {
-      id: 4,
-      text: 'Ele é um Golden Retriever, e fez 3 anos mês passado.',
-      isBot: false,
-    },
-    {
-      id: 5,
-      text: 'Certo, um Golden de 3 anos, está na flor da idade! Ele tem alguma necessidade específica? Por exemplo, ele é castrado, tem tendência a sobrepeso, sensibilidade na pele?',
-      isBot: true,
-    },
-    {
-      id: 6,
-      text: 'Ele não é castrado, mas notei que ele anda se coçando muito ultimamente, acho que pode ser a ração.',
-      isBot: false,
-    },
-  ];
+    }
+  ]);
+  const [loading, setLoading] = useState(false);
+  const scrollViewRef = useRef();
 
-  const handleSend = () => {
-    if (message.trim()) {
-      console.log('Enviando mensagem:', message);
-      setMessage('');
+  const perguntarGemini = async (pergunta) => {
+    try {
+      // Usar o modelo correto
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      const prompt = `
+## Especialidade
+Você é um assistente virtual especializado em cuidados com pets (cães, gatos, pássaros, etc.).
+
+## Tarefa
+Ajudar tutores a cuidar melhor de seus animais de estimação, dando dicas sobre alimentação, saúde, comportamento, vacinas e muito mais.
+
+## Regras
+- Seja amigável, prestativo e dê dicas práticas
+- Responda de forma concisa e clara (máximo 500 caracteres)
+- Se não souber a resposta, seja honesto
+- Não invente informações médicas
+
+---
+Pergunta do usuário: ${pergunta}
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      return text;
+    } catch (error) {
+      console.error('Erro detalhado:', error);
+      throw error;
+    }
+  };
+
+  const handleSend = async () => {
+    if (!message.trim() || loading) return;
+
+    const userMessage = {
+      id: Date.now().toString(),
+      text: message.trim(),
+      isBot: false,
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    const userText = message.trim();
+    setMessage('');
+    setLoading(true);
+
+    try {
+      const text = await perguntarGemini(userText);
+
+      const botMessage = {
+        id: (Date.now() + 1).toString(),
+        text: text,
+        isBot: true,
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Erro ao comunicar com Gemini:', error);
+      
+      const errorMessage = {
+        id: (Date.now() + 1).toString(),
+        text: 'Desculpe, tive um problema ao processar sua mensagem. Tente novamente.',
+        isBot: true,
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setLoading(false);
+      // Auto scroll para o fim
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     }
   };
 
@@ -89,9 +142,11 @@ const ChatBotScreen = ({ onClose }) => {
 
         {/* Messages */}
         <ScrollView 
+          ref={scrollViewRef}
           style={styles.messagesContainer}
           contentContainerStyle={styles.messagesContent}
           showsVerticalScrollIndicator={false}
+          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
         >
           {messages.map((msg) => (
             <View
@@ -126,6 +181,19 @@ const ChatBotScreen = ({ onClose }) => {
               )}
             </View>
           ))}
+          
+          {/* Loading indicator */}
+          {loading && (
+            <View style={styles.loadingWrapper}>
+              <View style={styles.botAvatar}>
+                <MaterialIcons name="smart-toy" size={20} color="#362013" />
+              </View>
+              <View style={[styles.messageBubble, styles.botBubble, styles.loadingBubble]}>
+                <ActivityIndicator size="small" color="#7D5E42" />
+                <Text style={styles.loadingText}>Digitando...</Text>
+              </View>
+            </View>
+          )}
         </ScrollView>
 
         {/* Input Area */}
@@ -141,9 +209,10 @@ const ChatBotScreen = ({ onClose }) => {
               maxLength={500}
             />
             <TouchableOpacity 
-              style={styles.sendButton}
+              style={[styles.sendButton, (!message.trim() || loading) && styles.sendButtonDisabled]}
               onPress={handleSend}
               activeOpacity={0.7}
+              disabled={!message.trim() || loading}
             >
               <MaterialIcons name="send" size={22} color="#FFFFFF" />
             </TouchableOpacity>
@@ -320,6 +389,25 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 3,
+  },
+  sendButtonDisabled: {
+    backgroundColor: '#C4B5A0',
+    opacity: 0.5,
+  },
+  loadingWrapper: {
+    flexDirection: 'row',
+    marginBottom: 12,
+    alignItems: 'flex-end',
+  },
+  loadingBubble: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#7D5E42',
+    fontStyle: 'italic',
   },
 });
 
