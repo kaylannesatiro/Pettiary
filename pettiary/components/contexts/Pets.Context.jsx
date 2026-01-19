@@ -59,8 +59,16 @@ export const PetsProvider = ({ children }) => {
     },
   ]);
 
+  const toggleFavorite = (petId) => {
+    setPets(prevPets =>
+      prevPets.map(pet =>
+        pet.id === petId ? { ...pet, isFavorite: !pet.isFavorite } : pet
+      )
+    );
+  };
+
   return (
-    <PetsContext.Provider value={{ pets }}>
+    <PetsContext.Provider value={{ pets, toggleFavorite }}>
       {children}
     </PetsContext.Provider>
   );
