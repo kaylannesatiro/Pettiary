@@ -51,9 +51,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E1D8CF',
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 12,
+  },
   title: {
     fontSize: 24,
+    fontFamily: 'Outfit_300Light',
     color: '#2D1810',
+    letterSpacing: 0.3,
+  },
+  filterContainer: {
+    marginTop: 16,
+    marginBottom: 12,
+    paddingHorizontal: 16,
   },
 });
 
