@@ -30,6 +30,33 @@ export const PetsProvider = ({ children }) => {
       image: null,
       isFavorite: true,
     },
+    {
+      id: '3',
+      name: 'Nina',
+      type: 'dog',
+      gender: 'Fêmea',
+      age: '1 ano',
+      image: null,
+      isFavorite: false,
+    },
+    {
+      id: '4',
+      name: 'Mingau',
+      type: 'cat',
+      gender: 'Macho',
+      age: '3 anos',
+      image: null,
+      isFavorite: true,
+    },
+    {
+      id: '5',
+      name: 'Bella',
+      type: 'dog',
+      gender: 'Fêmea',
+      age: '4 meses',
+      image: null,
+      isFavorite: false,
+    },
   ]);
 
   return (
