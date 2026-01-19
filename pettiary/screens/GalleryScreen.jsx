@@ -247,7 +247,15 @@ const GalleryScreen = ({ navigation, photos, setPhotos }) => {
         >
           <MaterialIcons name="arrow-back" size={24} color="#2C1810" />
         </TouchableOpacity>
-        <Text style={styles.title}>Galeria de Fotos</Text>
+        <View style={styles.headerCenter}>
+          <View style={styles.avatarContainer}>
+            <MaterialIcons name="collections" size={28} color="#362013" />
+          </View>
+          <View style={styles.headerInfo}>
+            <Text style={styles.headerTitle}>Galeria de Fotos</Text>
+            <Text style={styles.subtitle}>{photos.length} {photos.length === 1 ? 'foto' : 'fotos'}</Text>
+          </View>
+        </View>
         <View style={styles.placeholder} />
       </View>
 
@@ -362,10 +370,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
+  headerCenter: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  avatarContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#D5C0AB',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerInfo: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  headerTitle: {
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '600',
     color: '#2C1810',
+  },
+  subtitle: {
+    fontSize: 12,
+    color: '#7D5E42',
+    marginTop: 2,
   },
   placeholder: {
     width: 40,
