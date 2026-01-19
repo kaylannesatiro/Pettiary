@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePets } from '../contexts/Pets.Context';
+import SearchBar from '../inputs/SearchBar';
 import Button from '../ui/Button';
 
 const RegisteredPetsScreen = () => {
@@ -11,18 +12,33 @@ const RegisteredPetsScreen = () => {
   const [activeFilter, setActiveFilter] = useState('todos');
 
   const getFilteredPets = () => {
+    let filteredPets = pets;
+    
     if (activeFilter === 'favoritos') {
-      return getFavoritePets();
+      filteredPets = getFavoritePets();
     } else if (activeFilter === 'cachorros') {
-      return getPetsByType('dog');
+      filteredPets = getPetsByType('dog');
     } else if (activeFilter === 'gatos') {
-      return getPetsByType('cat');
+      filteredPets = getPetsByType('cat');
     }
-    return pets;
+
+    if (searchQuery.trim()) {
+      filteredPets = filteredPets.filter(pet =>
+        pet.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return filteredPets;
   };
 
   const filteredPets = getFilteredPets();
+  <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Buscar"
+        />
 
+        
   return (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
