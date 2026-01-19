@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePets } from '../contexts/Pets.Context';
 import Button from '../ui/Button';
 
 const RegisteredPetsScreen = () => {
+  const insets = useSafeAreaInsets();
   const { pets, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
@@ -21,10 +23,12 @@ const RegisteredPetsScreen = () => {
 
   const filteredPets = getFilteredPets();
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Animais Cadastrados</Text>
+  return (wrapper}>
+      <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Animais Cadastrados</Text>
+          <Text style={styles.title}>Animais Cadastrados</Text>
       </View>
 
       <View style={styles.filterContainer}>
@@ -63,11 +67,16 @@ const RegisteredPetsScreen = () => {
           <View style={styles.petItem}>
             <Text>{item.name}</Text>
           </View>
-        )}
-      />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#E1D8CF',
+  },
 
 const styles = StyleSheet.create({
   container: {
