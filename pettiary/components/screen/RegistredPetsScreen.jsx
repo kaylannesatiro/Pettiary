@@ -5,14 +5,12 @@ import { usePets } from '../contexts/Pets.Context';
 import SearchBar from '../inputs/SearchBar';
 import Button from '../ui/Button';
 import Card from '../display/Card';
-import BottomNav from '../navigation/BottomNav';
 
 const RegisteredPetsScreen = () => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
-  const [activeTab, setActiveTab] = useState('animais');
 
   const getFilteredPets = () => {
     let filteredPets = pets;
@@ -34,14 +32,13 @@ const RegisteredPetsScreen = () => {
     return filteredPets;
   };
 
-  const filteredPets = getFilteredPets();
-  <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Buscar"
-        />
+  const handlePetPress = (pet) => {
+    // Função para navegar ou abrir detalhes do pet
+    console.log('Pet selecionado:', pet.name);
+  };
 
-        
+  const filteredPets = getFilteredPets();
+
   return (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
@@ -49,6 +46,12 @@ const RegisteredPetsScreen = () => {
         <View style={styles.header}>
           <Text style={styles.title}>Animais Cadastrados</Text>
         </View>
+
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Buscar"
+        />
 
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -109,10 +112,6 @@ const RegisteredPetsScreen = () => {
         }
       />
       </View>
-      
-      <View style={[styles.bottomNav, { paddingBottom: insets.bottom }]}>
-        <BottomNav activeRoute="animais" onNavigate={handleTabChange} />
-      </View>
     </View>
   );
 };
@@ -163,9 +162,6 @@ const styles = StyleSheet.create({
     color: '#6B5544',
     textAlign: 'center',
     lineHeight: 24,
-  },
-  bottomNav: {
-    backgroundColor: '#563218',
   },
 });
 
