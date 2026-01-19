@@ -27,76 +27,15 @@ const { width } = Dimensions.get('window');
 const numColumns = 2;
 const imageSize = (width - 48) / numColumns;
 
-const GalleryScreen = ({ navigation }) => {
-  const [photos, setPhotos] = useState([]);
-  const [filteredPhotos, setFilteredPhotos] = useState([]);
+const GalleryScreen = ({ navigation, photos, setPhotos }) => {
   const [loading, setLoading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    loadPhotos();
+    // Não precisa mais carregar fotos, elas vêm do App.js
   }, []);
-
-  useEffect(() => {
-    filterPhotos();
-  }, [searchQuery, photos]);
-
-  const loadPhotos = async () => {
-    try {
-      setLoading(true);
-      const mockPhotos = [
-        {
-          id: '1',
-          uri: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400',
-          petName: 'Rex',
-          petType: 'dogs',
-          date: '2024-01-15'
-        },
-        {
-          id: '2',
-          uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400',
-          petName: 'Mia',
-          petType: 'cats',
-          date: '2024-01-14'
-        },
-        {
-          id: '3',
-          uri: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=400',
-          petName: 'Max',
-          petType: 'dogs',
-          date: '2024-01-13'
-        },
-        {
-          id: '4',
-          uri: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400',
-          petName: 'Luna',
-          petType: 'cats',
-          date: '2024-01-12'
-        },
-      ];
-      setPhotos(mockPhotos);
-    } catch (error) {
-      showSnackbar('Erro ao carregar fotos');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterPhotos = () => {
-    let filtered = [...photos];
-
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(photo =>
-        photo.petName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setFilteredPhotos(filtered);
-  };
 
   const pickImageFromGallery = async () => {
     try {
@@ -162,7 +101,11 @@ const GalleryScreen = ({ navigation }) => {
           date: new Date().toISOString().split('T')[0]
         };
         
-        setPhotos([newPhoto, ...photos]);
+        const updatedPhotos = [newPhoto, ...photos];
+        setPhotos(updatedPhotos);
+        console.log('Salvando fotos da galeria:', updatedPhotos.length, 'fotos');
+        await AsyncStorage.setItem('@gallery_photos', JSON.stringify(updatedPhotos));
+        console.log('Fotos da galeria salvas com sucesso');
         showSnackbar('Foto adicionada com sucesso!');
       }
     } catch (error) {
@@ -206,7 +149,8 @@ const GalleryScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             try {
-              setPhotos(photos.filter(photo => photo.id !== photoId));
+              const updatedPhotos = photos.filter(photo => photo.id !== photoId);
+              setPhotos(updatedPhotos);
               setSelectedPhoto(null);
               showSnackbar('Foto deletada com sucesso');
             } catch (error) {
@@ -217,6 +161,46 @@ const GalleryScreen = ({ navigation }) => {
         },
       ]
     );
+  };
+
+  const renamePhoto = (photoId, currentName) => {
+    Alert.prompt(
+      'Renomear Foto',
+      'Digite o novo nome:',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Salvar',
+          onPress: (newName) => {
+            if (newName && newName.trim()) {
+              const updatedPhotos = photos.map(photo => 
+                photo.id === photoId 
+                  ? { ...photo, petName: newName.trim() }
+                  : photo
+              );
+              setPhotos(updatedPhotos);
+              setSelectedPhoto(prev => prev ? { ...prev, petName: newName.trim() } : null);
+              showSnackbar('Nome atualizado com sucesso');
+            }
+          },
+        },
+      ],
+      'plain-text',
+      currentName
+    );
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    // Se a data está no formato yyyy-mm-dd
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateString;
   };
 
   const showSnackbar = (message) => {
@@ -267,19 +251,6 @@ const GalleryScreen = ({ navigation }) => {
         <View style={styles.placeholder} />
       </View>
 
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <MaterialIcons name="search" size={20} color="#7D5E42" />
-          <TextInput
-            placeholder="Buscar"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            style={styles.searchInput}
-            placeholderTextColor="#9B8A7A"
-          />
-        </View>
-      </View>
-
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#9B7653" />
@@ -287,7 +258,7 @@ const GalleryScreen = ({ navigation }) => {
         </View>
       ) : (
         <FlatList
-          data={filteredPhotos}
+          data={photos}
           renderItem={renderPhotoItem}
           keyExtractor={(item) => item.id}
           numColumns={numColumns}
@@ -319,25 +290,28 @@ const GalleryScreen = ({ navigation }) => {
                   />
                   <View style={styles.photoInfo}>
                     <View style={styles.photoInfoText}>
-                      <Text style={styles.modalPetName}>{selectedPhoto.petName}</Text>
-                      <Text style={styles.modalDate}>{selectedPhoto.date}</Text>
+                      <TouchableOpacity onPress={() => renamePhoto(selectedPhoto.id, selectedPhoto.petName)}>
+                        <Text style={styles.modalPetName}>{selectedPhoto.petName}</Text>
+                        <Text style={styles.editHint}>Toque para editar</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.modalDate}>{formatDate(selectedPhoto.date)}</Text>
                     </View>
                   </View>
-                  <View style={styles.modalActions}>
-                    <IconButton
-                      icon="delete"
-                      iconColor="#fff"
-                      size={28}
-                      onPress={() => deletePhoto(selectedPhoto.id)}
-                      style={styles.deleteButton}
-                    />
-                    <IconButton
-                      icon="close"
-                      iconColor="#fff"
-                      size={28}
+                  <View style={styles.modalActionsLeft}>
+                    <TouchableOpacity 
                       onPress={() => setSelectedPhoto(null)}
-                      style={styles.closeButton}
-                    />
+                      style={styles.iconButton}
+                    >
+                      <MaterialIcons name="close" size={30} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.modalActionsRight}>
+                    <TouchableOpacity 
+                      onPress={() => deletePhoto(selectedPhoto.id)}
+                      style={styles.iconButton}
+                    >
+                      <MaterialIcons name="delete" size={28} color="#fff" />
+                    </TouchableOpacity>
                   </View>
                 </>
               )}
@@ -395,25 +369,6 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     width: 40,
-  },
-  searchContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#D9C4B0',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    gap: 8,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 14,
-    color: '#2C1810',
-    padding: 0,
   },
   gridContainer: {
     padding: 16,
@@ -515,22 +470,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 4,
   },
+  editHint: {
+    color: '#D9C4B0',
+    fontSize: 12,
+    fontStyle: 'italic',
+    marginTop: 2,
+  },
   modalDate: {
     color: '#D9C4B0',
     fontSize: 14,
+    marginTop: 8,
   },
-  modalActions: {
+  modalActionsLeft: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+  },
+  modalActionsRight: {
     position: 'absolute',
     top: 40,
     right: 16,
-    flexDirection: 'column',
   },
-  deleteButton: {
-    backgroundColor: 'rgba(176, 0, 32, 0.9)',
-    marginBottom: 8,
-  },
-  closeButton: {
-    backgroundColor: 'rgba(74, 56, 41, 0.8)',
+  iconButton: {
+    padding: 8,
   },
   fab: {
     position: 'absolute',

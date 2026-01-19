@@ -30,6 +30,7 @@ const theme = {
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -38,7 +39,7 @@ export default function App() {
       case 'chatbot':
         return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
       case 'galeria':
-        return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} />;
+        return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
       case 'inicial':
       default:
         return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
