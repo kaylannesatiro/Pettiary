@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  StatusBar,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { usePets } from '../contexts/Pets.Context';
-import SearchBar from '../inputs/SearchBar';
-import Button from '../ui/Button';
-import Card from '../display/Card';
+import { usePets } from '../contexts/PetsContext';
+import SearchBar from '../components/inputs/SearchBar';
+import Button from '../components/ui/Button';
+import Card from '../components/display/Card';
+import BottomNav from '../components/navigation/BottomNav';
 
 const RegisteredPetsScreen = () => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
+  const [activeTab, setActiveTab] = useState('animais');
 
   const getFilteredPets = () => {
     let filteredPets = pets;
-    
+
     if (activeFilter === 'favoritos') {
       filteredPets = getFavoritePets();
     } else if (activeFilter === 'cachorros') {
@@ -33,8 +42,12 @@ const RegisteredPetsScreen = () => {
   };
 
   const handlePetPress = (pet) => {
-    // Função para navegar ou abrir detalhes do pet
-    console.log('Pet selecionado:', pet.name);
+    console.log('Abrir diário de:', pet.name);
+  };
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    console.log('Mudando para aba:', tabId);
   };
 
   const filteredPets = getFilteredPets();
@@ -44,17 +57,21 @@ const RegisteredPetsScreen = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
-          <Text style={styles.title}>Animais Cadastrados</Text>
-        </View>
+        <Text style={styles.title}>Animais Cadastrados</Text>
+      </View>
 
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Buscar"
-        />
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Buscar"
+      />
 
       <View style={styles.filterContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterScrollContent}
+        >
           <Button
             title="Todos"
             variant="filter"
@@ -112,6 +129,10 @@ const RegisteredPetsScreen = () => {
         }
       />
       </View>
+      
+      <View style={[styles.bottomNav, { paddingBottom: insets.bottom }]}>
+        <BottomNav activeRoute="animais" onNavigate={handleTabChange} />
+      </View>
     </View>
   );
 };
@@ -129,6 +150,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 12,
+    backgroundColor: '#E1D8CF',
   },
   title: {
     fontSize: 24,
@@ -140,6 +162,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 12,
     backgroundColor: '#E1D8CF',
+  },
+  filterScrollContent: {
+    paddingHorizontal: 16,
+    gap: 8,
   },
   content: {
     flex: 1,
@@ -162,6 +188,9 @@ const styles = StyleSheet.create({
     color: '#6B5544',
     textAlign: 'center',
     lineHeight: 24,
+  },
+  bottomNav: {
+    backgroundColor: '#563218',
   },
 });
 
