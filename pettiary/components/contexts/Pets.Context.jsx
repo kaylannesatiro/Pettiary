@@ -11,7 +11,26 @@ export const usePets = () => {
 };
 
 export const PetsProvider = ({ children }) => {
-  const [pets, setPets] = useState([]);
+  const [pets, setPets] = useState([
+    {
+      id: '1',
+      name: 'Lua',
+      type: 'cat',
+      gender: 'Fêmea',
+      age: '6 meses',
+      image: null,
+      isFavorite: false,
+    },
+    {
+      id: '2',
+      name: 'Max',
+      type: 'dog',
+      gender: 'Macho',
+      age: '2 anos',
+      image: null,
+      isFavorite: true,
+    },
+  ]);
 
   return (
     <PetsContext.Provider value={{ pets }}>
