@@ -67,6 +67,15 @@ const RegisteredPetsScreen = () => {
           <View style={styles.petItem}>
             <Text>{item.name}</Text>
           </View>
+        )}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              Nenhum animal encontrado
+            </Text>
+          </View>
+        }
+      />
       </View>
     </View>
   );
@@ -77,8 +86,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E1D8CF',
   },
-
-const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E1D8CF',
