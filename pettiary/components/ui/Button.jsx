@@ -6,6 +6,9 @@ const Button = ({ onPress, title, variant = 'primary', selected = false }) => {
     if (variant === 'filter') {
       return selected ? styles.filterButtonSelected : styles.filterButton;
     }
+    if (variant === 'action') {
+      return styles.actionButton;
+    }
     return styles.button;
   };
 
@@ -59,6 +62,14 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 15,
     fontFamily: 'Outfit_300Light',
+  },
+  actionButton: {
+    backgroundColor: '#8B6F47',
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 20,
+    alignItems: 'center',
+    width: '100%',
   },
 });
 
