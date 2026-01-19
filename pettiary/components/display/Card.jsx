@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Button from '../ui/Button';
 
-const Card = ({ pet, onToggleFavorite }) => {
+const Card = ({ pet, onPress, onToggleFavorite }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -15,6 +16,7 @@ const Card = ({ pet, onToggleFavorite }) => {
         <TouchableOpacity 
           style={styles.favoriteButton}
           onPress={() => onToggleFavorite(pet.id)}
+          activeOpacity={0.8}
         >
           <Ionicons 
             name={pet.isFavorite ? "heart" : "heart-outline"} 
@@ -24,8 +26,18 @@ const Card = ({ pet, onToggleFavorite }) => {
         </TouchableOpacity>
       </View>
       
-      <Text style={styles.name}>{pet.name}</Text>
-      <Text>{pet.gender} • {pet.age}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.name}>{pet.name}</Text>
+        <Text style={styles.details}>
+          {pet.gender} • {pet.age}
+        </Text>
+      </View>
+
+      <Button
+        title="Diário do Pet"
+        variant="action"
+        onPress={onPress}
+      />
     </View>
   );
 };
@@ -74,9 +86,19 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
+  infoContainer: {
+    marginBottom: 14,
+  },
   name: {
     fontSize: 24,
+    fontFamily: 'Outfit_300Light',
     color: '#2D1810',
+    marginBottom: 4,
+  },
+  details: {
+    fontSize: 15,
+    fontFamily: 'Outfit_300Light',
+    color: '#6B5544',
   },
 });
 
