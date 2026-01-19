@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { usePets } from '../contexts/PetsContext';
+import { usePets } from '../contexts/Pets.Context';
 
 const RegisteredPetsScreen = () => {
   return (
