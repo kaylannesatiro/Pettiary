@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { usePets } from '../contexts/Pets.Context';
 import Button from '../ui/Button';
 
 const RegisteredPetsScreen = () => {
-  const { pets } = usePets();
+  const { pets, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
+
+  const getFilteredPets = () => {
+    if (activeFilter === 'favoritos') {
+      return getFavoritePets();
+    } else if (activeFilter === 'cachorros') {
+      return getPetsByType('dog');
+    } else if (activeFilter === 'gatos') {
+      return getPetsByType('cat');
+    }
+    return pets;
+  };
+
+  const filteredPets = getFilteredPets();
 
   return (
     <View style={styles.container}>
@@ -42,6 +55,16 @@ const RegisteredPetsScreen = () => {
           />
         </ScrollView>
       </View>
+
+      <FlatList
+        data={filteredPets}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.petItem}>
+            <Text>{item.name}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
