@@ -67,6 +67,15 @@ export const PetsProvider = ({ children }) => {
     );
   };
 
+  const addPet = (newPet) => {
+    const pet = {
+      ...newPet,
+      id: Date.now().toString(),
+      isFavorite: false,
+    };
+    setPets(prevPets => [...prevPets, pet]);
+  };
+
   const getPetsByType = (type) => {
     return pets.filter(pet => pet.type === type);
   };
