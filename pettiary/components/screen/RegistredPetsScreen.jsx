@@ -99,6 +99,19 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 16,
   },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 80,
+    paddingHorizontal: 40,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_300Light',
+    color: '#6B5544',
+    textAlign: 'center',
+  },
 });
 
 export default RegisteredPetsScreen;
