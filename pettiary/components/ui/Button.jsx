@@ -33,7 +33,32 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 15,
+    fontFamily: 'Outfit_300Light',
+  },
+  filterButton: {
+    backgroundColor: 'transparent',
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 20,
+    marginHorizontal: 3,
+  },
+  filterButtonSelected: {
+    backgroundColor: '#8B6F47',
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 20,
+    marginHorizontal: 3,
+  },
+  filterText: {
+    color: '#2D1810',
+    fontSize: 15,
+    fontFamily: 'Outfit_300Light',
+  },
+  filterTextSelected: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontFamily: 'Outfit_300Light',
   },
 });
 
