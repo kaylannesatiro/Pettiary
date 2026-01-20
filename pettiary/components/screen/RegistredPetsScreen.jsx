@@ -14,7 +14,7 @@ import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,9 +41,15 @@ const RegisteredPetsScreen = ({ onOpenDiary }) => {
     return filteredPets;
   };
 
-  const handlePetPress = (pet) => {
+  const handleCardPress = (pet) => {
     if (onOpenDiary) {
-      onOpenDiary(pet);
+      onOpenDiary(pet.id);
+    }
+  };
+
+  const handleDiaryPress = (pet) => {
+    if (onOpenDiaryDirect) {
+      onOpenDiaryDirect(pet);
     }
   };
 
@@ -107,7 +113,8 @@ const RegisteredPetsScreen = ({ onOpenDiary }) => {
         renderItem={({ item }) => (
           <Card
             pet={item}
-            onPress={() => handlePetPress(item)}
+            onPress={() => handleCardPress(item)}
+            onDiaryPress={() => handleDiaryPress(item)}
             onToggleFavorite={toggleFavorite}
           />
         )}

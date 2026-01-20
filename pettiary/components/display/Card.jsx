@@ -1,21 +1,27 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Button from '../ui/Button';
 
-const Card = ({ pet, onPress, onToggleFavorite }) => {
+const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <TouchableOpacity 
+        style={styles.imageContainer}
+        onPress={onPress}
+        activeOpacity={0.8}
+      >
         <View style={[styles.image, styles.placeholderContainer]}>
           <Text style={styles.placeholderText}>
             {pet.type === 'cat' ? '🐱' : '🐶'}
           </Text>
         </View>
-        
         <TouchableOpacity 
           style={styles.favoriteButton}
-          onPress={() => onToggleFavorite(pet.id)}
+          onPress={(e) => {
+            e.stopPropagation();
+            onToggleFavorite && onToggleFavorite(pet.id);
+          }}
           activeOpacity={0.8}
         >
           <Ionicons 
@@ -24,19 +30,21 @@ const Card = ({ pet, onPress, onToggleFavorite }) => {
             color="#D85F7E" 
           />
         </TouchableOpacity>
-      </View>
-      
+      </TouchableOpacity>
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{pet.name}</Text>
         <Text style={styles.details}>
           {pet.gender} • {pet.age}
         </Text>
       </View>
-
       <Button
         title="Diário do Pet"
         variant="action"
-        onPress={onPress}
+        onPress={() => {
+          if (onDiaryPress) {
+            onDiaryPress();
+          }
+        }}
       />
     </View>
   );
@@ -45,15 +53,15 @@ const Card = ({ pet, onPress, onToggleFavorite }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#D5C0AB',
-    borderRadius: 20,
-    padding: 20,
-    marginHorizontal: 20,
-    marginVertical: 10,
+    borderRadius: 24,
+    padding: 24,
+    marginHorizontal: 16,
+    marginVertical: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 6,
+    elevation: 4,
   },
   imageContainer: {
     position: 'relative',
