@@ -14,6 +14,20 @@ import PetHeader from '../ui/PetHeader';
 import InfoTag from '../ui/InfoTag';
 import Button from '../ui/Button';
 
+// Função para formatar idade do pet
+function formatAge(age) {
+  if (!age) return 'Não informado';
+  if (typeof age === 'string') return age;
+  if (typeof age === 'number') return `${age} anos`;
+  if (typeof age === 'object') {
+    const { anos, meses } = age;
+    if (anos && meses) return `${anos} anos e ${meses} meses`;
+    if (anos) return `${anos} anos`;
+    if (meses) return `${meses} meses`;
+  }
+  return String(age);
+}
+
 const PetInfoScreen = ({ 
   petId,
   onBack,
@@ -39,23 +53,16 @@ const PetInfoScreen = ({
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.imageContainer}>
-          {pet.image ? (
-            <Image 
-              source={pet.image}
-              style={styles.petImage}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={styles.placeholderContainer}>
-              <Text style={styles.placeholderText}>
-                {pet.type === 'cat' ? '🐱' : '🐶'}
-              </Text>
-            </View>
-          )}
-        </View>
-
         <View style={styles.contentContainer}>
+          <View style={styles.petPhotoBox}>
+            {pet.image ? (
+              <Image source={pet.image} style={styles.petPhotoCircle} />
+            ) : (
+              <View style={styles.petPhotoPlaceholder}>
+                <Ionicons name="image-outline" size={56} color="#563218" />
+              </View>
+            )}
+          </View>
           <View style={styles.nameRow}>
             <Text style={styles.petName}>{pet.name}</Text>
             <TouchableOpacity style={styles.heartButton} onPress={() => toggleFavorite(pet.id)}>
@@ -67,14 +74,14 @@ const PetInfoScreen = ({
 
           <View style={styles.infoGrid}>
             <View style={styles.infoRow}>
-              <InfoTag text={pet.gender} style={styles.infoTag} />
+              <InfoTag text={pet.gender ? String(pet.gender) : 'Não informado'} style={styles.infoTag} />
               <View style={styles.tagSpacer} />
-              <InfoTag text={pet.age} style={styles.infoTag} />
+              <InfoTag text={formatAge(pet.age)} style={styles.infoTag} />
             </View>
             <View style={styles.infoRow}>
-              <InfoTag text={pet.weight} style={styles.infoTag} />
+              <InfoTag text={pet.weight ? String(pet.weight) : 'Não informado'} style={styles.infoTag} />
               <View style={styles.tagSpacer} />
-              <InfoTag text={pet.breed} style={styles.infoTag} />
+              <InfoTag text={pet.breed ? String(pet.breed) : 'Não informado'} style={styles.infoTag} />
             </View>
           </View>
 
@@ -90,6 +97,24 @@ const PetInfoScreen = ({
 };
 
 const styles = StyleSheet.create({
+    petPhotoBox: {
+      alignItems: 'center',
+      marginBottom: 18,
+    },
+    petPhotoCircle: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      backgroundColor: '#E1D8CF',
+    },
+    petPhotoPlaceholder: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      backgroundColor: '#E1D8CF',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   container: {
     flex: 1,
     backgroundColor: '#D5C0AB',
