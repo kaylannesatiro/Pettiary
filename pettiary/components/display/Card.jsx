@@ -9,15 +9,18 @@ const Card = ({ pet }) => {
           <Text style={styles.placeholderText}>
             {pet.type === 'cat' ? '🐱' : '🐶'}
           </Text>
-        </View>
         <TouchableOpacity 
           style={styles.favoriteButton}
-          onPress={() => onToggleFavorite && onToggleFavorite(pet.id)}
+          onPress={(e) => {
+            e.stopPropagation();
+            onToggleFavorite && onToggleFavorite(pet.id);
+          }}
           activeOpacity={0.8}
-    container: {
-      backgroundColor: '#D5C0AB',
-      borderRadius: 24,
-      padding: 24,
+        >
+          <Text style={{fontSize: 28, color: '#D85F7E'}}>
+            {pet.isFavorite ? '❤️' : '🤍'}
+          </Text>
+        </TouchableOpacity>
       marginHorizontal: 16,
       marginVertical: 12,
       shadowColor: '#000',
