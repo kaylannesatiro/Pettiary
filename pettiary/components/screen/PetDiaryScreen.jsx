@@ -19,7 +19,13 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     alimentacao: [false, true, false, true, true, true, true],
     passeio: [true, true, false, true, true, true, true],
     anotacao: [false, true, false, true, true, true, true],
-    eventos: {},
+    eventos: {
+      2: ['medicacao'],
+      7: ['vacinacao'],
+      6: ['veterinario'],
+      19: ['banho'],
+      23: ['medicacao'],
+    },
   });
 
   const [selectedDay, setSelectedDay] = useState(19);
@@ -241,6 +247,25 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
               onDayPress={handleDayPress}
             />
           </View>
+
+          <View style={styles.legendContainer}>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#F5AE72' }]} />
+              <Text style={styles.legendText}>Medicação</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#DB6348' }]} />
+              <Text style={styles.legendText}>Vacinação</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#5DA6CD' }]} />
+              <Text style={styles.legendText}>Veterinário</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#6EA838' }]} />
+              <Text style={styles.legendText}>Banho/Tosa</Text>
+            </View>
+          </View>
         </ScrollView>
       </View>
     </View>
@@ -355,6 +380,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Outfit_300Light',
     color: '#FFFFFF',
+  },
+  legendContainer: {
+    backgroundColor: '#E1D8CF',
+    borderRadius: 20,
+    marginHorizontal: 16,
+    marginTop: -8,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 12,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  legendDot: {
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
+    marginRight: 8,
+  },
+  legendText: {
+    fontSize: 14,
+    fontFamily: 'Outfit_300Light',
+    color: '#5C4A3A',
   },
 });
 
