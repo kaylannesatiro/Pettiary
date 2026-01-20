@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePets } from '../contexts/Pets.Context';
 
@@ -8,10 +8,12 @@ const EditPetScreen = ({ petId, onBack }) => {
   const { getPetById, updatePet } = usePets();
   const pet = getPetById(petId);
   const ageMatch = pet?.age ? pet.age.match(/(\d+)\s*(meses|anos)/) : null;
+  const weightMatch = pet?.weight ? pet.weight.match(/(\d+(?:\.\d+)?)\s*(kg|g)/) : null;
   const [name, setName] = useState(pet?.name || '');
   const [ageNumber, setAgeNumber] = useState(ageMatch ? ageMatch[1] : '');
   const [ageUnit, setAgeUnit] = useState(ageMatch ? ageMatch[2] : 'meses');
-  const [weight, setWeight] = useState(pet?.weight || '');
+  const [weightNumber, setWeightNumber] = useState(weightMatch ? weightMatch[1] : '');
+  const [weightUnit, setWeightUnit] = useState(weightMatch ? weightMatch[2] : 'kg');
   const [breed, setBreed] = useState(pet?.breed || '');
   const [image, setImage] = useState(pet?.image || null);
 
@@ -22,6 +24,7 @@ const EditPetScreen = ({ petId, onBack }) => {
 
   const handleSave = () => {
     const age = `${ageNumber} ${ageUnit}`;
+    const weight = `${weightNumber} ${weightUnit}`;
     updatePet(petId, { name, age, weight, breed, image });
     if (onBack) onBack();
   };
@@ -29,9 +32,16 @@ const EditPetScreen = ({ petId, onBack }) => {
   if (!pet) return null;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Editar Pet</Text>
-      <View style={styles.card}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Ionicons name="arrow-back" size={24} color="#563218" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Editar Pet</Text>
+        <View style={styles.placeholder} />
+      </View>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.card}>
         <View style={styles.photoArea}>
           {image ? (
             <Image source={image} style={styles.petImageBig} />
@@ -79,12 +89,29 @@ const EditPetScreen = ({ petId, onBack }) => {
         </View>
         <View style={styles.fieldRow}>
           <Text style={styles.label}>Peso</Text>
-          <TextInput
-            style={styles.input}
-            value={weight}
-            onChangeText={setWeight}
-            placeholder="Peso"
-          />
+          <View style={styles.ageRowBetter}>
+            <TextInput
+              style={styles.ageInputBetter}
+              value={weightNumber}
+              onChangeText={setWeightNumber}
+              placeholder="Número"
+              keyboardType="numeric"
+            />
+            <View style={styles.unitButtonsRow}>
+              <TouchableOpacity
+                style={[styles.unitButton, weightUnit === 'kg' && styles.unitButtonSelected]}
+                onPress={() => setWeightUnit('kg')}
+              >
+                <Text style={[styles.unitButtonText, weightUnit === 'kg' && styles.unitButtonTextSelected]}>kg</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.unitButton, weightUnit === 'g' && styles.unitButtonSelected]}
+                onPress={() => setWeightUnit('g')}
+              >
+                <Text style={[styles.unitButtonText, weightUnit === 'g' && styles.unitButtonTextSelected]}>g</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
         <View style={styles.fieldRow}>
           <Text style={styles.label}>Raça</Text>
@@ -102,11 +129,46 @@ const EditPetScreen = ({ petId, onBack }) => {
           <Text style={styles.cancelText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#D5C0AB',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 24,
+    paddingBottom: 40,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontFamily: 'Outfit_400Regular',
+    color: '#563218',
+    textAlign: 'center',
+  },
+  placeholder: {
+    width: 40,
+  },
     photoArea: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -143,12 +205,6 @@ const styles = StyleSheet.create({
     fieldRow: {
       marginBottom: 12,
     },
-  container: {
-    flex: 1,
-    backgroundColor: '#D5C0AB',
-    padding: 24,
-    justifyContent: 'center',
-  },
   card: {
     backgroundColor: '#E1D8CF',
     borderRadius: 20,
@@ -158,13 +214,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 8,
     elevation: 3,
-  },
-  title: {
-    fontSize: 28,
-    fontFamily: 'Outfit_400Regular',
-    color: '#563218',
-    marginBottom: 24,
-    textAlign: 'center',
   },
   label: {
     fontSize: 16,
@@ -184,45 +233,45 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D5C0AB',
   },
-  ageRow: {
+  ageRowBetter: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    gap: 12,
   },
-  ageInput: {
-    flex: 2,
-    marginRight: 8,
-  },
-  unitSelect: {
-    flex: 2,
+  ageInputBetter: {
+    flex: 1,
     backgroundColor: '#fff',
     borderRadius: 12,
+    padding: 12,
+    fontSize: 16,
+    fontFamily: 'Outfit_400Regular',
+    color: '#563218',
     borderWidth: 1,
     borderColor: '#D5C0AB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 44,
   },
-  unitSelectText: {
+  unitButtonsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  unitButton: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#D5C0AB',
+  },
+  unitButtonSelected: {
+    backgroundColor: '#563218',
+    borderColor: '#563218',
+  },
+  unitButtonText: {
     color: '#563218',
     fontFamily: 'Outfit_400Regular',
     fontSize: 16,
   },
-  unitOptionsBox: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#D5C0AB',
-    marginTop: 4,
-    marginBottom: 8,
-    padding: 8,
-  },
-  unitOption: {
-    color: '#563218',
-    fontFamily: 'Outfit_400Regular',
-    fontSize: 16,
-    paddingVertical: 6,
-    textAlign: 'center',
+  unitButtonTextSelected: {
+    color: '#fff',
   },
   button: {
     backgroundColor: '#563218',
