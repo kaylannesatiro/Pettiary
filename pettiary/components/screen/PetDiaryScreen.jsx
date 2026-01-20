@@ -17,7 +17,34 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     alimentacao: [false, true, false, true, true, true, true],
     passeio: [true, true, false, true, true, true, true],
     anotacao: [false, true, false, true, true, true, true],
+    eventos: {},
   });
+
+  const [selectedDay, setSelectedDay] = useState(19);
+
+  const addEventToCalendar = (eventType) => {
+    setDiaryData(prev => {
+      const currentEvents = prev.eventos[selectedDay] || [];
+      if (currentEvents.includes(eventType)) {
+        const newEvents = currentEvents.filter(e => e !== eventType);
+        const updatedEventos = { ...prev.eventos };
+        if (newEvents.length === 0) {
+          delete updatedEventos[selectedDay];
+        } else {
+          updatedEventos[selectedDay] = newEvents;
+        }
+        return { ...prev, eventos: updatedEventos };
+      } else {
+        return {
+          ...prev,
+          eventos: {
+            ...prev.eventos,
+            [selectedDay]: [...currentEvents, eventType]
+          }
+        };
+      }
+    });
+  };
 
   const toggleWeeklyActivity = (activity, index) => {
     setDiaryData(prev => ({
@@ -127,6 +154,71 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
           showsVerticalScrollIndicator={false}
         >
           {renderWeeklyView()}
+
+          <View style={styles.cardContainer}>
+            <View style={styles.actionButtonsContainer}>
+              <View style={styles.actionButtonRow}>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => addEventToCalendar('medicacao')}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.actionButtonContent}>
+                    <Ionicons 
+                      name={diaryData.eventos[selectedDay]?.includes('medicacao') ? "remove-circle-outline" : "add-circle-outline"} 
+                      size={18} 
+                      color="#FFFFFF" 
+                    />
+                    <Text style={styles.actionButtonText}>Medicação</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => addEventToCalendar('vacinacao')}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.actionButtonContent}>
+                    <Ionicons 
+                      name={diaryData.eventos[selectedDay]?.includes('vacinacao') ? "remove-circle-outline" : "add-circle-outline"} 
+                      size={18} 
+                      color="#FFFFFF" 
+                    />
+                    <Text style={styles.actionButtonText}>Vacinação</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.actionButtonRow}>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => addEventToCalendar('veterinario')}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.actionButtonContent}>
+                    <Ionicons 
+                      name={diaryData.eventos[selectedDay]?.includes('veterinario') ? "remove-circle-outline" : "add-circle-outline"} 
+                      size={18} 
+                      color="#FFFFFF" 
+                    />
+                    <Text style={styles.actionButtonText}>Veterinário</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.actionButton}
+                  onPress={() => addEventToCalendar('banho')}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.actionButtonContent}>
+                    <Ionicons 
+                      name={diaryData.eventos[selectedDay]?.includes('banho') ? "remove-circle-outline" : "add-circle-outline"} 
+                      size={18} 
+                      color="#FFFFFF" 
+                    />
+                    <Text style={styles.actionButtonText}>Banho/Tosa</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </ScrollView>
       </View>
     </View>
@@ -207,6 +299,40 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Outfit_300Light',
     color: '#E1D8CF',
+  },
+  cardContainer: {
+    backgroundColor: '#D5C0AB',
+    borderRadius: 20,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    overflow: 'hidden',
+  },
+  actionButtonsContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  actionButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  actionButton: {
+    flex: 1,
+    backgroundColor: '#8B6F47',
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginHorizontal: 6,
+    alignItems: 'center',
+  },
+  actionButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  actionButtonText: {
+    fontSize: 14,
+    fontFamily: 'Outfit_300Light',
+    color: '#FFFFFF',
   },
 });
 
