@@ -7,23 +7,15 @@ import { usePets } from '../contexts/Pets.Context';
 const EditPetScreen = ({ petId, onBack }) => {
   const { getPetById, updatePet } = usePets();
   const pet = getPetById(petId);
-  // Separar idade em número e unidade
   const ageMatch = pet?.age ? pet.age.match(/(\d+)\s*(meses|anos)/) : null;
   const [name, setName] = useState(pet?.name || '');
   const [ageNumber, setAgeNumber] = useState(ageMatch ? ageMatch[1] : '');
   const [ageUnit, setAgeUnit] = useState(ageMatch ? ageMatch[2] : 'meses');
-  // Remover select dropdown, usar botões lado a lado
   const [weight, setWeight] = useState(pet?.weight || '');
   const [breed, setBreed] = useState(pet?.breed || '');
   const [image, setImage] = useState(pet?.image || null);
 
-  // Simulação de seleção de imagem (expo-image-picker)
   const handleSelectImage = async () => {
-    // Aqui você pode integrar com expo-image-picker
-    // Exemplo:
-    // const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, aspect: [1,1], quality: 1 });
-    // if (!result.canceled) setImage({ uri: result.assets[0].uri });
-    // Simulação:
     Alert.alert('Atualizar Foto', 'Funcionalidade de escolher foto pode ser ativada com expo-image-picker. Por enquanto, foto simulada.');
     setImage({ uri: 'https://placekitten.com/300/300' });
   };
@@ -85,7 +77,6 @@ const EditPetScreen = ({ petId, onBack }) => {
             </View>
           </View>
         </View>
-// Removido bloco duplicado de estilos incorreto
         <View style={styles.fieldRow}>
           <Text style={styles.label}>Peso</Text>
           <TextInput
