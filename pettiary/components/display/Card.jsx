@@ -1,42 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Button from '../ui/Button';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Card = ({ pet, onPress, onToggleFavorite }) => {
+const Card = ({ pet }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <View style={[styles.image, styles.placeholderContainer]}>
-          <Text style={styles.placeholderText}>
-            {pet.type === 'cat' ? '🐱' : '🐶'}
-          </Text>
-        </View>
-        
-        <TouchableOpacity 
-          style={styles.favoriteButton}
-          onPress={() => onToggleFavorite(pet.id)}
-          activeOpacity={0.8}
-        >
-          <Ionicons 
-            name={pet.isFavorite ? "heart" : "heart-outline"} 
-            size={28} 
-            color="#D85F7E" 
-          />
-        </TouchableOpacity>
-      </View>
-      
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{pet.name}</Text>
         <Text style={styles.details}>
           {pet.gender} • {pet.age}
         </Text>
       </View>
+    </View>
+  );
+};
+      </View>
 
       <Button
         title="Diário do Pet"
         variant="action"
-        onPress={onPress}
+        onPress={() => {
+          if (onDiaryPress) {
+            onDiaryPress();
+          }
+        }}
       />
     </View>
   );
