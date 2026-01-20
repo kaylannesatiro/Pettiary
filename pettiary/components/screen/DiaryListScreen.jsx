@@ -1,32 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PetHeader from '../ui/PetHeader';
 
-const diaryEntries = [
-  {
-    id: '1',
-    image: { uri: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80' },
-    text: 'Lua comeu seu lanche',
-  },
-  {
-    id: '2',
-    image: { uri: 'https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=400&q=80' },
-    text: 'Thor ganhou uma flor',
-  },
-];
+// Diários organizados por data
+const diaryEntriesByDate = {
+  '20/01/2026': [
+    {
+      id: '1',
+      image: { uri: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80' },
+      text: 'Lua comeu seu lanche',
+    },
+    {
+      id: '2',
+      image: { uri: 'https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=400&q=80' },
+      text: 'Thor ganhou uma flor',
+    },
+  ],
+  '19/01/2026': [
+    {
+      id: '3',
+      image: { uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80' },
+      text: 'Mimi brincou no jardim',
+    },
+  ],
+};
 
 const DiaryListScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [date, setDate] = useState('01/11/2025');
+  const today = new Date();
+  const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+  const [date, setDate] = useState(formattedDate);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const handlePrevDate = () => {
-    // Lógica para mudar a data para anterior
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setCurrentDate(newDate);
+    const formatted = `${String(newDate.getDate()).padStart(2, '0')}/${String(newDate.getMonth() + 1).padStart(2, '0')}/${newDate.getFullYear()}`;
+    setDate(formatted);
   };
+
   const handleNextDate = () => {
-    // Lógica para mudar a data para próxima
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setCurrentDate(newDate);
+    const formatted = `${String(newDate.getDate()).padStart(2, '0')}/${String(newDate.getMonth() + 1).padStart(2, '0')}/${newDate.getFullYear()}`;
+    setDate(formatted);
   };
+
+  // Filtrar entradas do diário pela data selecionada
+  const currentEntries = useMemo(() => {
+    return diaryEntriesByDate[date] || [];
+  }, [date]);
 
   const renderEntry = ({ item }) => (
     <View style={styles.cardPet}>
@@ -50,13 +77,21 @@ const DiaryListScreen = ({ navigation }) => {
           <Ionicons name="chevron-forward" size={25} color="#A0744F" />
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={diaryEntries}
-        renderItem={renderEntry}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-      />
+      {currentEntries.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Ionicons name="calendar-outline" size={64} color="#A0744F" />
+          <Text style={styles.emptyText}>Nenhum registro neste dia</Text>
+          <Text style={styles.emptySubText}>Adicione momentos especiais do seu pet!</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={currentEntries}
+          renderItem={renderEntry}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
@@ -75,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     marginBottom: 18,
     marginHorizontal: 12,
-    height: 56,
+    height: 44,
     paddingHorizontal: 16,
     shadowColor: '#000',
     shadowOpacity: 0.04,
@@ -106,6 +141,27 @@ const styles = StyleSheet.create({
     color: '#A0744F',
     fontWeight: 'bold',
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+    paddingBottom: 80,
+  },
+  emptyText: {
+    fontSize: 20,
+    color: '#362013',
+    fontFamily: 'Outfit_300Light',
+    marginTop: 24,
+    textAlign: 'center',
+  },
+  emptySubText: {
+    fontSize: 16,
+    color: '#7B5E3B',
+    fontFamily: 'Outfit_300Light',
+    marginTop: 8,
+    textAlign: 'center',
+  },
   dateBarText: {
     flex: 1,
     textAlign: 'center',
@@ -124,7 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginBottom: 24,
     alignItems: 'center',
-    width: 280,
+    width: 340,
     height: 277,
     padding: 14,
     shadowColor: '#000',
@@ -133,7 +189,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   imageContainer: {
-    width: 250,
+    width: 310,
     height: 200,
     borderRadius: 14,
     overflow: 'hidden',
@@ -143,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imagePet: {
-    width: 250,
+    width: 310,
     height: 200,
     borderRadius: 14,
   },
