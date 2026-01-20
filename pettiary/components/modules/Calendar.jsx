@@ -49,14 +49,45 @@ const Calendar = ({ currentMonth, onMonthChange, eventos = {}, selectedDay, onDa
       }
     });
     
-    // Retorna apenas a primeira cor por enquanto
-    return colors.length > 0 ? [colors[0]] : [];
+    return colors;
   };
 
   const renderDayBackground = (colors) => {
     if (colors.length === 0) return null;
-    // Suporta apenas uma cor por enquanto
-    return { backgroundColor: colors[0] };
+    if (colors.length === 1) return { backgroundColor: colors[0] };
+    
+    // Para múltiplas cores, dividir em fatias circulares
+    if (colors.length === 2) {
+      return (
+        <View style={styles.multiColorContainer}>
+          <View style={[styles.halfCircleLeft, { backgroundColor: colors[0] }]} />
+          <View style={[styles.halfCircleRight, { backgroundColor: colors[1] }]} />
+        </View>
+      );
+    }
+    
+    if (colors.length === 3) {
+      return (
+        <View style={styles.multiColorContainer}>
+          <View style={[styles.thirdTop, { backgroundColor: colors[0] }]} />
+          <View style={[styles.thirdBottomLeft, { backgroundColor: colors[1] }]} />
+          <View style={[styles.thirdBottomRight, { backgroundColor: colors[2] }]} />
+        </View>
+      );
+    }
+    
+    if (colors.length === 4) {
+      return (
+        <View style={styles.multiColorContainer}>
+          <View style={[styles.quarterTopLeft, { backgroundColor: colors[0] }]} />
+          <View style={[styles.quarterTopRight, { backgroundColor: colors[1] }]} />
+          <View style={[styles.quarterBottomLeft, { backgroundColor: colors[2] }]} />
+          <View style={[styles.quarterBottomRight, { backgroundColor: colors[3] }]} />
+        </View>
+      );
+    }
+    
+    return null;
   };
 
   const days = getCalendarDays();
@@ -220,6 +251,83 @@ const styles = StyleSheet.create({
   calendarDayTextSelected: {
     color: '#563218',
     fontFamily: 'WorkSans_500Medium',
+  },
+  multiColorContainer: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 19,
+    overflow: 'hidden',
+  },
+  halfCircleLeft: {
+    position: 'absolute',
+    width: '50%',
+    height: '100%',
+    left: 0,
+    borderTopLeftRadius: 19,
+    borderBottomLeftRadius: 19,
+  },
+  halfCircleRight: {
+    position: 'absolute',
+    width: '50%',
+    height: '100%',
+    right: 0,
+    borderTopRightRadius: 19,
+    borderBottomRightRadius: 19,
+  },
+  thirdTop: {
+    position: 'absolute',
+    width: '100%',
+    height: '50%',
+    top: 0,
+    borderTopLeftRadius: 19,
+    borderTopRightRadius: 19,
+  },
+  thirdBottomLeft: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    left: 0,
+    bottom: 0,
+    borderBottomLeftRadius: 19,
+  },
+  thirdBottomRight: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    right: 0,
+    bottom: 0,
+    borderBottomRightRadius: 19,
+  },
+  quarterTopLeft: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    left: 0,
+    top: 0,
+    borderTopLeftRadius: 19,
+  },
+  quarterTopRight: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    right: 0,
+    top: 0,
+    borderTopRightRadius: 19,
+  },
+  quarterBottomLeft: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    left: 0,
+    bottom: 0,
+    borderBottomLeftRadius: 19,
+  },
+  quarterBottomRight: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%',
+    right: 0,
+    bottom: 0,
+    borderBottomRightRadius: 19,
   },
 });
 
