@@ -56,10 +56,10 @@ const PetInfoScreen = ({
         <View style={styles.contentContainer}>
           <View style={styles.petPhotoBox}>
             {pet.image ? (
-              <Image source={pet.image} style={styles.petPhotoCircle} />
+              <Image source={pet.image} style={styles.petPhotoSquare} />
             ) : (
               <View style={styles.petPhotoPlaceholder}>
-                <Ionicons name="image-outline" size={56} color="#563218" />
+                <Ionicons name="image-outline" size={80} color="#563218" />
               </View>
             )}
           </View>
@@ -99,7 +99,14 @@ const PetInfoScreen = ({
 const styles = StyleSheet.create({
     petPhotoBox: {
       alignItems: 'center',
-      marginBottom: 18,
+      marginBottom: 24,
+      width: '100%',
+    },
+    petPhotoSquare: {
+      width: '100%',
+      aspectRatio: 1,
+      borderRadius: 20,
+      backgroundColor: '#E1D8CF',
     },
     petPhotoCircle: {
       width: 120,
@@ -108,9 +115,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#E1D8CF',
     },
     petPhotoPlaceholder: {
-      width: 120,
-      height: 120,
-      borderRadius: 60,
+      width: '100%',
+      aspectRatio: 1,
+      borderRadius: 20,
       backgroundColor: '#E1D8CF',
       alignItems: 'center',
       justifyContent: 'center',
