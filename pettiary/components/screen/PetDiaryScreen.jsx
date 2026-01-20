@@ -19,6 +19,11 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     anotacao: [false, true, false, true, true, true, true],
   });
 
+  const toggleWeeklyActivity = (activity, index) => {
+    // Bug: não está atualizando o estado
+    console.log('Tentando atualizar', activity, index);
+  };
+
   const renderWeeklyView = () => (
     <View style={styles.weeklyContainer}>
       <View style={styles.activityRow}>
@@ -32,6 +37,7 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
                 checked && styles.dotFilled,
                 !checked && styles.dotEmpty,
               ]}
+              onPress={() => toggleWeeklyActivity('alimentacao', index)}
               activeOpacity={0.7}
             >
               {checked ? (
@@ -57,6 +63,7 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
                 checked && styles.dotFilled,
                 !checked && styles.dotEmpty,
               ]}
+              onPress={() => toggleWeeklyActivity('passeio', index)}
               activeOpacity={0.7}
             >
               {checked ? (
@@ -82,6 +89,7 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
                 checked && styles.dotFilled,
                 !checked && styles.dotEmpty,
               ]}
+              onPress={() => toggleWeeklyActivity('anotacao', index)}
               activeOpacity={0.7}
             >
               {checked ? (
