@@ -1,40 +1,16 @@
 import React, { useState } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PetsProvider } from './components/contexts/Pets.Context';
-import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
-import PetInfoScreen from './components/screen/PetInfoScreen';
-import PetDiaryScreen from './components/screen/PetDiaryScreen';
-import EditPetScreen from './components/screen/EditPetScreen';
-
-export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('list');
-  const [selectedPet, setSelectedPet] = useState(null);
-
-  const handleOpenPetInfo = (petId) => {
-    setSelectedPet(petId);
-    setCurrentScreen('info');
-  };
-
-  const handleOpenDiaryDirect = (petId) => {
-    setSelectedPet(petId);
-    setCurrentScreen('diary');
-  };
-
-  const handleOpenDiary = () => {
-    setCurrentScreen('diary');
-  };
-
-  const handleBackToList = () => {
-    setCurrentScreen('list');
-    setSelectedPet(null);
-import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider, MD3LightTheme } from 'react-native-paper';
+import { PetsProvider } from './components/contexts/Pets.Context';
 import InitialScreen from './screens/InitialScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import ChatBotScreen from './screens/ChatBotScreen';
 import GalleryScreen from './screens/GalleryScreen';
+import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
+import PetInfoScreen from './components/screen/PetInfoScreen';
+import PetDiaryScreen from './components/screen/PetDiaryScreen';
+import EditPetScreen from './components/screen/EditPetScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -60,19 +36,25 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
   const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [selectedPet, setSelectedPet] = useState(null);
 
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'configuracoes':
-        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
-      case 'chatbot':
-        return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
-      case 'galeria':
-        return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
-      case 'inicial':
-      default:
-        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
-    }
+  const handleOpenPetInfo = (petId) => {
+    setSelectedPet(petId);
+    setCurrentScreen('info');
+  };
+
+  const handleOpenDiaryDirect = (petId) => {
+    setSelectedPet(petId);
+    setCurrentScreen('diary');
+  };
+
+  const handleOpenDiary = () => {
+    setCurrentScreen('diary');
+  };
+
+  const handleBackToList = () => {
+    setCurrentScreen('list');
+    setSelectedPet(null);
   };
 
   const handleBackToInfo = () => {
@@ -87,40 +69,60 @@ export default function App() {
     setCurrentScreen('info');
   };
 
-  return (
-    <SafeAreaProvider>
-      <PetsProvider>
-        {currentScreen === 'list' && (
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'configuracoes':
+        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
+      case 'chatbot':
+        return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
+      case 'galeria':
+        return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
+      case 'animais':
+      case 'list':
+        return (
           <RegisteredPetsScreen 
             onOpenDiary={handleOpenPetInfo}
             onOpenDiaryDirect={handleOpenDiaryDirect}
+            onNavigate={setCurrentScreen}
           />
-        )}
-        {currentScreen === 'info' && (
+        );
+      case 'info':
+        return (
           <PetInfoScreen 
             petId={selectedPet}
             onBack={handleBackToList}
             onEdit={handleEditPet}
             onOpenDiary={handleOpenDiary}
           />
-        )}
-        {currentScreen === 'edit' && (
+        );
+      case 'edit':
+        return (
           <EditPetScreen 
             petId={selectedPet}
             onBack={handleBackFromEdit}
           />
-        )}
-        {currentScreen === 'diary' && (
+        );
+      case 'diary':
+        return (
           <PetDiaryScreen 
             petName={selectedPet?.name} 
             onBack={handleBackToList} 
           />
-        )}
+        );
+      case 'inicial':
+      default:
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
+    }
+  };
+
+  return (
+    <SafeAreaProvider>
+      <PetsProvider>
+        <PaperProvider theme={theme}>
+          {renderScreen()}
+          <StatusBar style="dark" backgroundColor="#E1D8CF" />
+        </PaperProvider>
       </PetsProvider>
-      <PaperProvider theme={theme}>
-        {renderScreen()}
-        <StatusBar style="dark" backgroundColor="#E1D8CF" />
-      </PaperProvider>
     </SafeAreaProvider>
   );
 }

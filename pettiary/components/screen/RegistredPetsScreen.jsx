@@ -14,7 +14,7 @@ import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onNavigate }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,7 +55,9 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log('Mudando para aba:', tabId);
+    if (onNavigate) {
+      onNavigate(tabId);
+    }
   };
 
   const filteredPets = getFilteredPets();
