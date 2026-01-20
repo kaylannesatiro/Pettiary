@@ -26,6 +26,9 @@ const Card = ({ pet }) => {
           {pet.gender} • {pet.age}
         </Text>
       </View>
+      <TouchableOpacity style={{marginTop: 10, backgroundColor: '#8B6F47', borderRadius: 12, padding: 12, alignItems: 'center'}}>
+        <Text style={{color: '#fff', fontSize: 16}}>Diário do Pet</Text>
+      </TouchableOpacity>
     </View>
   );
 };
