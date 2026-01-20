@@ -15,9 +15,7 @@ const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
           <Image source={pet.image} style={styles.image} resizeMode="cover" />
         ) : (
           <View style={[styles.image, styles.placeholderContainer]}>
-            <Text style={styles.placeholderText}>
-              {pet.type === 'cat' ? '🐱' : '🐶'}
-            </Text>
+            <Ionicons name="paw" size={80} color="#563218" />
           </View>
         )}
         <TouchableOpacity 
@@ -81,9 +79,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1D8CF',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  placeholderText: {
-    fontSize: 80,
   },
   favoriteButton: {
     position: 'absolute',

@@ -436,14 +436,13 @@ const styles = StyleSheet.create({
   typeButton: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: '#D5C0AB',
-    flex: 1,
     minWidth: '30%',
-    maxWidth: '48%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   genderRow: {
     flexDirection: 'row',
@@ -477,7 +476,8 @@ const styles = StyleSheet.create({
   unitButtonText: {
     color: '#563218',
     fontFamily: 'Outfit_400Regular',
-    fontSize: 16,
+    fontSize: 14,
+    textAlign: 'center',
   },
   unitButtonTextSelected: {
     color: '#fff',
