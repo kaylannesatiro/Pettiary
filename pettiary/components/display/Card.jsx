@@ -1,5 +1,6 @@
 
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Button from '../ui/Button';
 
 const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
@@ -23,9 +24,11 @@ const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
           }}
           activeOpacity={0.8}
         >
-          <Text style={{fontSize: 28, color: '#D85F7E'}}>
-            {pet.isFavorite ? '❤️' : '🤍'}
-          </Text>
+          <Ionicons 
+            name={pet.isFavorite ? "heart" : "heart-outline"} 
+            size={28} 
+            color="#D85F7E" 
+          />
         </TouchableOpacity>
       </TouchableOpacity>
       <View style={styles.infoContainer}>
