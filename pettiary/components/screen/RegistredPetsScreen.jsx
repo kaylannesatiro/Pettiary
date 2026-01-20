@@ -73,7 +73,9 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onAddPet }) => {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log('Mudando para aba:', tabId);
+    if (onNavigate) {
+      onNavigate(tabId);
+    }
   };
 
   const filteredPets = getFilteredPets();
