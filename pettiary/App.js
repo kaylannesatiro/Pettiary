@@ -8,6 +8,7 @@ import ConfigScreen from './screens/ConfigScreen';
 import ChatBotScreen from './screens/ChatBotScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
+import DiaryListScreen from './components/screen/DiaryListScreen';
 import PetInfoScreen from './components/screen/PetInfoScreen';
 import PetDiaryScreen from './components/screen/PetDiaryScreen';
 import EditPetScreen from './components/screen/EditPetScreen';
@@ -34,6 +35,7 @@ const theme = {
 };
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('diaryList');
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
   const [galleryPhotos, setGalleryPhotos] = useState([]);
@@ -53,9 +55,14 @@ export default function App() {
     setCurrentScreen('diary');
   };
 
+
   const handleBackToList = () => {
     setCurrentScreen('list');
     setSelectedPet(null);
+  };
+
+  const handleOpenDiaryList = () => {
+    setCurrentScreen('diaryList');
   };
 
   const handleBackToInfo = () => {
@@ -85,6 +92,15 @@ export default function App() {
           <RegisteredPetsScreen 
             onOpenDiary={handleOpenPetInfo}
             onOpenDiaryDirect={handleOpenDiaryDirect}
+            onOpenDiaryList={handleOpenDiaryList}
+          />
+        )}
+                {currentScreen === 'diaryList' && (
+                  <DiaryListScreen 
+                    navigation={{ goBack: handleBackToList }}
+                  />
+                )}
+        {currentScreen === 'info' && (
             onAddPet={handleAddPet}
   const renderScreen = () => {
     switch (currentScreen) {
