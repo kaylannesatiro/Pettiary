@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 5,
     paddingHorizontal: 0,
-    gap: 11,
+    gap: 9,
   },
   weekDayContainer: {
     width: 38,
@@ -211,7 +211,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Outfit_700Bold',
     color: '#362013',
-    letterSpacing: 3.5,
   },
   calendarGrid: {
     flexDirection: 'row',
@@ -222,7 +221,6 @@ const styles = StyleSheet.create({
   },
   calendarDayWrapper: {
     width: 38,
-    paddingVertical: 3,
     alignItems: 'center',
   },
   calendarDay: {
