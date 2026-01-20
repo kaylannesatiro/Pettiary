@@ -35,23 +35,29 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 20,
     marginVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  imageContainer: {
-    position: 'relative',
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <View style={[styles.image, styles.placeholderContainer]}>
+            <Text style={styles.placeholderText}>
+              {pet.type === 'cat' ? '🐱' : '🐶'}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{pet.name}</Text>
+          <Text style={styles.details}>
+            {pet.gender} • {pet.age}
+          </Text>
+        </View>
+      </View>
     width: '100%',
     marginBottom: 14,
   },
   image: {
-    width: '100%',
-    height: 240,
-    borderRadius: 16,
-  },
-  placeholderContainer: {
+    imageContainer: {
+      width: '100%',
+      marginBottom: 14,
+    },
     backgroundColor: '#E1D8CF',
     justifyContent: 'center',
     alignItems: 'center',
