@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { usePets } from '../contexts/Pets.Context';
@@ -283,19 +283,17 @@ const AddPetScreen = ({ onBack }) => {
             />
             {showBreedSuggestions && (
               <View style={styles.suggestionsContainer}>
-                <FlatList
-                  data={filteredBreeds}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
+                <ScrollView nestedScrollEnabled={true} style={styles.suggestionsScroll}>
+                  {filteredBreeds.map((item, index) => (
                     <TouchableOpacity
+                      key={index}
                       style={styles.suggestionItem}
                       onPress={() => selectBreed(item)}
                     >
                       <Text style={styles.suggestionText}>{item}</Text>
                     </TouchableOpacity>
-                  )}
-                  nestedScrollEnabled={true}
-                />
+                  ))}
+                </ScrollView>
               </View>
             )}
           </View>
