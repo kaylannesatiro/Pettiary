@@ -15,22 +15,17 @@ import PetHeader from '../ui/PetHeader';
 
 const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   const insets = useSafeAreaInsets();
+  const today = new Date();
   
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 6, 1));
+  const [currentMonth, setCurrentMonth] = useState(today);
   const [diaryData, setDiaryData] = useState({
-    alimentacao: [false, true, false, true, true, true, true],
-    passeio: [true, true, false, true, true, true, true],
-    anotacao: [false, true, false, true, true, true, true],
-    eventos: {
-      2: ['medicacao'],
-      7: ['vacinacao'],
-      6: ['veterinario'],
-      19: ['banho'],
-      23: ['medicacao'],
-    },
+    alimentacao: [false, false, false, false, false, false, false],
+    passeio: [false, false, false, false, false, false, false],
+    anotacao: [false, false, false, false, false, false, false],
+    eventos: {},
   });
 
-  const [selectedDay, setSelectedDay] = useState(19);
+  const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [modalVisible, setModalVisible] = useState(false);
 
   const changeMonth = (direction) => {
@@ -108,12 +103,12 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
               onPress={() => toggleWeeklyActivity('alimentacao', index)}
               activeOpacity={0.7}
             >
-              {checked ? (
-                <Text style={styles.dotTextWhite}>
+              {!checked ? (
+                <Text style={styles.dotText}>
                   {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'][index]}
                 </Text>
               ) : (
-                <Ionicons name="checkmark" size={20} color="#8B6F47" />
+                <Ionicons name="checkmark" size={20} color="#FFFFFF" />
               )}
             </TouchableOpacity>
           ))}
@@ -134,12 +129,12 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
               onPress={() => toggleWeeklyActivity('passeio', index)}
               activeOpacity={0.7}
             >
-              {checked ? (
-                <Text style={styles.dotTextWhite}>
+              {!checked ? (
+                <Text style={styles.dotText}>
                   {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'][index]}
                 </Text>
               ) : (
-                <Ionicons name="checkmark" size={20} color="#8B6F47" />
+                <Ionicons name="checkmark" size={20} color="#FFFFFF" />
               )}
             </TouchableOpacity>
           ))}
@@ -160,12 +155,12 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
               onPress={() => toggleWeeklyActivity('anotacao', index)}
               activeOpacity={0.7}
             >
-              {checked ? (
-                <Text style={styles.dotTextWhite}>
+              {!checked ? (
+                <Text style={styles.dotText}>
                   {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'][index]}
                 </Text>
               ) : (
-                <Ionicons name="checkmark" size={20} color="#8B6F47" />
+                <Ionicons name="checkmark" size={20} color="#FFFFFF" />
               )}
             </TouchableOpacity>
           ))}
@@ -370,7 +365,8 @@ const styles = StyleSheet.create({
   },
   dotsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    gap: 9,
   },
   dot: {
     width: 38,
@@ -386,6 +382,11 @@ const styles = StyleSheet.create({
   },
   dotFilled: {
     backgroundColor: '#8B6F47',
+  },
+  dotText: {
+    fontSize: 18,
+    fontFamily: 'Outfit_300Light',
+    color: '#8B6F47',
   },
   dotTextWhite: {
     fontSize: 18,
