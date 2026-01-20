@@ -197,14 +197,13 @@ const styles = StyleSheet.create({
   },
   weekDaysHeader: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     marginTop: 6,
     marginBottom: 5,
     paddingHorizontal: 0,
-    gap: 9,
   },
   weekDayContainer: {
-    width: 38,
+    flex: 1,
     alignItems: 'center',
   },
   weekDayText: {
@@ -215,13 +214,15 @@ const styles = StyleSheet.create({
   calendarGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    gap: 9,
+    justifyContent: 'space-around',
     marginTop: 8,
   },
   calendarDayWrapper: {
-    width: 38,
+    width: '14.28%',
+    aspectRatio: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 9,
   },
   calendarDay: {
     width: 38,
