@@ -14,7 +14,7 @@ import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onOpenDiaryList }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
@@ -63,10 +63,17 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
   return (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
-      <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={[styles.container, { paddingTop: insets.top }]}> 
         <View style={styles.header}>
-        <Text style={styles.title}>Animais Cadastrados</Text>
-      </View>
+          <Text style={styles.title}>Animais Cadastrados</Text>
+          <View style={{ marginTop: 8 }}>
+            <Button
+              title="Diários"
+              variant="action"
+              onPress={onOpenDiaryList}
+            />
+          </View>
+        </View>
 
       <SearchBar
         value={searchQuery}
