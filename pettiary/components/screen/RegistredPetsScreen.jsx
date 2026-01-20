@@ -14,7 +14,7 @@ import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = () => {
+const RegisteredPetsScreen = ({ onOpenDiary }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,7 +42,9 @@ const RegisteredPetsScreen = () => {
   };
 
   const handlePetPress = (pet) => {
-    console.log('Abrir diário de:', pet.name);
+    if (onOpenDiary) {
+      onOpenDiary(pet);
+    }
   };
 
   const handleTabChange = (tabId) => {
