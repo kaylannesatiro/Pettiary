@@ -14,18 +14,18 @@ const Card = ({ pet }) => {
           style={styles.favoriteButton}
           onPress={() => onToggleFavorite && onToggleFavorite(pet.id)}
           activeOpacity={0.8}
-        >
-          <Text style={{fontSize: 28, color: '#D85F7E'}}>
-            {pet.isFavorite ? '❤️' : '🤍'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{pet.name}</Text>
-        <Text style={styles.details}>
-          {pet.gender} • {pet.age}
-        </Text>
-      </View>
+    container: {
+      backgroundColor: '#D5C0AB',
+      borderRadius: 24,
+      padding: 24,
+      marginHorizontal: 16,
+      marginVertical: 12,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.18,
+      shadowRadius: 6,
+      elevation: 4,
+    },
       <TouchableOpacity style={{marginTop: 10, backgroundColor: '#8B6F47', borderRadius: 12, padding: 12, alignItems: 'center'}}>
         <Text style={{color: '#fff', fontSize: 16}}>Diário do Pet</Text>
       </TouchableOpacity>
