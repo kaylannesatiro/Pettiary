@@ -86,13 +86,6 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onOpenDiaryList,
       <View style={[styles.container, { paddingTop: insets.top }]}> 
         <View style={styles.header}>
           <Text style={styles.title}>Animais Cadastrados</Text>
-          <View style={{ marginTop: 8 }}>
-            <Button
-              title="Diários"
-              variant="action"
-              onPress={onOpenDiaryList}
-            />
-          </View>
         </View>
 
       <SearchBar
