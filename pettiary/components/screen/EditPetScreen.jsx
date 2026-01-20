@@ -1,8 +1,26 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePets } from '../contexts/Pets.Context';
+
+const BREEDS = [
+  // Cachorros
+  'Akita', 'Beagle', 'Bichon Frisé', 'Border Collie', 'Boxer', 'Bulldog Francês', 'Bulldog Inglês',
+  'Chihuahua', 'Chow Chow', 'Cocker Spaniel', 'Dachshund (Salsicha)', 'Dálmata', 'Doberman',
+  'Fila Brasileiro', 'Golden Retriever', 'Husky Siberiano', 'Jack Russell Terrier', 'Labrador',
+  'Lhasa Apso', 'Lulu da Pomerânia', 'Maltês', 'Mastiff', 'Pastor Alemão', 'Pastor Australiano',
+  'Pinscher', 'Pit Bull', 'Poodle', 'Pug', 'Rottweiler', 'Schnauzer', 'Shih Tzu', 'Spitz Alemão',
+  'Staffordshire', 'Teckel', 'Terrier Brasileiro', 'Vira-lata', 'Weimaraner', 'Yorkshire',
+  // Gatos
+  'Abissínio', 'Angorá', 'Bengal', 'Birmanês', 'British Shorthair', 'Chartreux', 'Cornish Rex',
+  'Devon Rex', 'Exótico', 'Himalaio', 'Maine Coon', 'Manx', 'Mau Egípcio', 'Norueguês da Floresta',
+  'Persa', 'Ragdoll', 'Russo Azul', 'Savannah', 'Scottish Fold', 'Siamês', 'Sphynx', 'SRD (Sem Raça Definida)',
+  'Tonquinês', 'Turkish Angora',
+  // Outros
+  'Coelho', 'Hamster', 'Porquinho da Índia', 'Chinchila', 'Ferret', 'Papagaio', 'Calopsita',
+  'Periquito', 'Arara', 'Canário', 'Tartaruga', 'Iguana'
+].sort();
 
 const EditPetScreen = ({ petId, onBack }) => {
   const { getPetById, updatePet } = usePets();
@@ -16,10 +34,30 @@ const EditPetScreen = ({ petId, onBack }) => {
   const [weightUnit, setWeightUnit] = useState(weightMatch ? weightMatch[2] : 'kg');
   const [breed, setBreed] = useState(pet?.breed || '');
   const [image, setImage] = useState(pet?.image || null);
+  const [showBreedSuggestions, setShowBreedSuggestions] = useState(false);
+  const [filteredBreeds, setFilteredBreeds] = useState([]);
 
   const handleSelectImage = async () => {
     Alert.alert('Atualizar Foto', 'Funcionalidade de escolher foto pode ser ativada com expo-image-picker. Por enquanto, foto simulada.');
     setImage({ uri: 'https://placekitten.com/300/300' });
+  };
+
+  const handleBreedChange = (text) => {
+    setBreed(text);
+    if (text.length > 0) {
+      const filtered = BREEDS.filter(b => 
+        b.toLowerCase().includes(text.toLowerCase())
+      ).slice(0, 10);
+      setFilteredBreeds(filtered);
+      setShowBreedSuggestions(filtered.length > 0);
+    } else {
+      setShowBreedSuggestions(false);
+    }
+  };
+
+  const selectBreed = (selectedBreed) => {
+    setBreed(selectedBreed);
+    setShowBreedSuggestions(false);
   };
 
   const handleSave = () => {
@@ -118,9 +156,27 @@ const EditPetScreen = ({ petId, onBack }) => {
           <TextInput
             style={styles.input}
             value={breed}
-            onChangeText={setBreed}
+            onChangeText={handleBreedChange}
+            onFocus={() => breed.length > 0 && handleBreedChange(breed)}
             placeholder="Raça"
           />
+          {showBreedSuggestions && (
+            <View style={styles.suggestionsContainer}>
+              <FlatList
+                data={filteredBreeds}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.suggestionItem}
+                    onPress={() => selectBreed(item)}
+                  >
+                    <Text style={styles.suggestionText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+                nestedScrollEnabled={true}
+              />
+            </View>
+          )}
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Salvar</Text>
@@ -272,6 +328,25 @@ const styles = StyleSheet.create({
   },
   unitButtonTextSelected: {
     color: '#fff',
+  },
+  suggestionsContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D5C0AB',
+    marginTop: 4,
+    maxHeight: 200,
+    overflow: 'hidden',
+  },
+  suggestionItem: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E1D8CF',
+  },
+  suggestionText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_400Regular',
+    color: '#563218',
   },
   button: {
     backgroundColor: '#563218',
