@@ -92,7 +92,7 @@ const PetInfoScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E1D8CF',
+    backgroundColor: '#D5C0AB',
   },
   scrollView: {
     flex: 1,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 120,
   },
   contentContainer: {
-    backgroundColor: '#E1D8CF',
+    backgroundColor: '#D5C0AB',
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     paddingHorizontal: 20,

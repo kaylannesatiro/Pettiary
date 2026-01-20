@@ -11,7 +11,7 @@ const InfoTag = ({ text, style }) => {
 
 const styles = StyleSheet.create({
   tag: {
-    backgroundColor: '#E8DDD0',
+    backgroundColor: '#E1D8CF',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 20,
@@ -20,9 +20,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: 15,
-    fontFamily: 'Outfit_300Light',
-    color: '#5C4A3A',
+    fontSize: 16,
+    fontFamily: 'Outfit_400Regular',
+    color: '#563218',
   },
 });
 
