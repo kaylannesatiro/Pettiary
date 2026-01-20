@@ -5,6 +5,7 @@ import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
 import PetInfoScreen from './components/screen/PetInfoScreen';
 import PetDiaryScreen from './components/screen/PetDiaryScreen';
 import EditPetScreen from './components/screen/EditPetScreen';
+import AddPetScreen from './components/screen/AddPetScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('list');
@@ -41,6 +42,14 @@ export default function App() {
     setCurrentScreen('info');
   };
 
+  const handleAddPet = () => {
+    setCurrentScreen('add');
+  };
+
+  const handleBackFromAdd = () => {
+    setCurrentScreen('list');
+  };
+
   return (
     <SafeAreaProvider>
       <PetsProvider>
@@ -48,6 +57,7 @@ export default function App() {
           <RegisteredPetsScreen 
             onOpenDiary={handleOpenPetInfo}
             onOpenDiaryDirect={handleOpenDiaryDirect}
+            onAddPet={handleAddPet}
           />
         )}
         {currentScreen === 'info' && (
@@ -62,6 +72,11 @@ export default function App() {
           <EditPetScreen 
             petId={selectedPet}
             onBack={handleBackFromEdit}
+          />
+        )}
+        {currentScreen === 'add' && (
+          <AddPetScreen 
+            onBack={handleBackFromAdd}
           />
         )}
         {currentScreen === 'diary' && (

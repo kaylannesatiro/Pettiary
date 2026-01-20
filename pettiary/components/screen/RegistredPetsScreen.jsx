@@ -6,15 +6,17 @@ import {
   ScrollView,
   FlatList,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { usePets } from '../contexts/Pets.Context';
 import SearchBar from '../inputs/SearchBar';
 import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onAddPet }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,8 +67,11 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
-        <Text style={styles.title}>Animais Cadastrados</Text>
-      </View>
+          <Text style={styles.title}>Animais Cadastrados</Text>
+          <TouchableOpacity style={styles.addButton} onPress={onAddPet}>
+            <Ionicons name="add-circle" size={32} color="#563218" />
+          </TouchableOpacity>
+        </View>
 
       <SearchBar
         value={searchQuery}
@@ -156,10 +161,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1D8CF',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 12,
     backgroundColor: '#E1D8CF',
+  },
+  addButton: {
+    padding: 4,
   },
   title: {
     fontSize: 24,
