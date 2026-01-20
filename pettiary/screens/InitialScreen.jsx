@@ -121,7 +121,7 @@ const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
             <ActionButton
               icon="collections"
               label="Galeria"
-              onPress={() => console.log('Galeria')}
+              onPress={() => onNavigate && onNavigate('galeria')}
             />
           </View>
 

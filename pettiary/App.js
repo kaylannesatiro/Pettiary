@@ -5,6 +5,7 @@ import { PaperProvider, MD3LightTheme } from 'react-native-paper';
 import InitialScreen from './screens/InitialScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import ChatBotScreen from './screens/ChatBotScreen';
+import GalleryScreen from './screens/GalleryScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -29,6 +30,7 @@ const theme = {
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -36,6 +38,8 @@ export default function App() {
         return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
       case 'chatbot':
         return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
+      case 'galeria':
+        return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
       case 'inicial':
       default:
         return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
