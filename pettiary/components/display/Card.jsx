@@ -1,5 +1,5 @@
 
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Button from '../ui/Button';
 
@@ -11,11 +11,15 @@ const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
         onPress={onPress}
         activeOpacity={0.8}
       >
-        <View style={[styles.image, styles.placeholderContainer]}>
-          <Text style={styles.placeholderText}>
-            {pet.type === 'cat' ? '🐱' : '🐶'}
-          </Text>
-        </View>
+        {pet.image ? (
+          <Image source={pet.image} style={styles.image} resizeMode="cover" />
+        ) : (
+          <View style={[styles.image, styles.placeholderContainer]}>
+            <Text style={styles.placeholderText}>
+              {pet.type === 'cat' ? '🐱' : '🐶'}
+            </Text>
+          </View>
+        )}
         <TouchableOpacity 
           style={styles.favoriteButton}
           onPress={(e) => {

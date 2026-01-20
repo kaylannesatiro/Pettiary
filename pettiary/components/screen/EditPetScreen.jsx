@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { usePets } from '../contexts/Pets.Context';
 
 const BREEDS = [
@@ -38,8 +39,25 @@ const EditPetScreen = ({ petId, onBack }) => {
   const [filteredBreeds, setFilteredBreeds] = useState([]);
 
   const handleSelectImage = async () => {
-    Alert.alert('Atualizar Foto', 'Funcionalidade de escolher foto pode ser ativada com expo-image-picker. Por enquanto, foto simulada.');
-    setImage({ uri: 'https://placekitten.com/300/300' });
+    // Solicitar permissão para acessar a galeria
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      Alert.alert('Permissão negada', 'Você precisa permitir o acesso à galeria para selecionar uma foto.');
+      return;
+    }
+
+    // Abrir galeria
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setImage({ uri: result.assets[0].uri });
+    }
   };
 
   const handleBreedChange = (text) => {
