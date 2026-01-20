@@ -6,30 +6,48 @@ import {
   ScrollView,
   FlatList,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { usePets } from '../contexts/Pets.Context';
 import SearchBar from '../inputs/SearchBar';
 import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onNavigate }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onAddPet }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');
   const [activeTab, setActiveTab] = useState('animais');
 
+  const getUniqueAnimalTypes = () => {
+    const types = [...new Set(pets.map(pet => pet.type))];
+    return types;
+  };
+
+  const getTypeLabel = (type) => {
+    const labels = {
+      'dog': 'Cachorros',
+      'cat': 'Gatos',
+      'bird': 'Pássaros',
+      'rabbit': 'Coelhos',
+      'hamster': 'Hamsters',
+      'fish': 'Peixes',
+      'turtle': 'Tartarugas',
+    };
+    return labels[type] || type.charAt(0).toUpperCase() + type.slice(1) + 's';
+  };
+
   const getFilteredPets = () => {
     let filteredPets = pets;
 
     if (activeFilter === 'favoritos') {
       filteredPets = getFavoritePets();
-    } else if (activeFilter === 'cachorros') {
-      filteredPets = getPetsByType('dog');
-    } else if (activeFilter === 'gatos') {
-      filteredPets = getPetsByType('cat');
+    } else if (activeFilter !== 'todos') {
+      filteredPets = pets.filter(pet => pet.type === activeFilter);
     }
 
     if (searchQuery.trim()) {
@@ -67,8 +85,9 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onNavigate }) =>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
-        <Text style={styles.title}>Animais Cadastrados</Text>
-      </View>
+          <Text style={styles.title}>Animais Cadastrados</Text>
+
+        </View>
 
       <SearchBar
         value={searchQuery}
@@ -94,18 +113,15 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onNavigate }) =>
             selected={activeFilter === 'favoritos'}
             onPress={() => setActiveFilter('favoritos')}
           />
-          <Button
-            title="Cachorros"
-            variant="filter"
-            selected={activeFilter === 'cachorros'}
-            onPress={() => setActiveFilter('cachorros')}
-          />
-          <Button
-            title="Gatos"
-            variant="filter"
-            selected={activeFilter === 'gatos'}
-            onPress={() => setActiveFilter('gatos')}
-          />
+          {getUniqueAnimalTypes().map((type) => (
+            <Button
+              key={type}
+              title={getTypeLabel(type)}
+              variant="filter"
+              selected={activeFilter === type}
+              onPress={() => setActiveFilter(type)}
+            />
+          ))}
         </ScrollView>
       </View>
 
@@ -140,8 +156,10 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onNavigate }) =>
         }
       />
       </View>
-      
-      <View style={[styles.bottomNav, { paddingBottom: insets.bottom }]}>
+            <TouchableOpacity style={styles.floatingButton} onPress={onAddPet}>
+        <Ionicons name="add" size={28} color="#fff" />
+      </TouchableOpacity>
+            <View style={[styles.bottomNav, { paddingBottom: insets.bottom }]}>
         <BottomNav activeRoute="animais" onNavigate={handleTabChange} />
       </View>
     </View>
@@ -199,6 +217,22 @@ const styles = StyleSheet.create({
     color: '#6B5544',
     textAlign: 'center',
     lineHeight: 24,
+  },
+  floatingButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 90,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#563218',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   bottomNav: {
     backgroundColor: '#563218',

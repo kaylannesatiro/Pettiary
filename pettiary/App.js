@@ -11,6 +11,7 @@ import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
 import PetInfoScreen from './components/screen/PetInfoScreen';
 import PetDiaryScreen from './components/screen/PetDiaryScreen';
 import EditPetScreen from './components/screen/EditPetScreen';
+import AddPetScreen from './components/screen/AddPetScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -69,6 +70,22 @@ export default function App() {
     setCurrentScreen('info');
   };
 
+  const handleAddPet = () => {
+    setCurrentScreen('add');
+  };
+
+  const handleBackFromAdd = () => {
+    setCurrentScreen('list');
+  };
+
+  return (
+    <SafeAreaProvider>
+      <PetsProvider>
+        {currentScreen === 'list' && (
+          <RegisteredPetsScreen 
+            onOpenDiary={handleOpenPetInfo}
+            onOpenDiaryDirect={handleOpenDiaryDirect}
+            onAddPet={handleAddPet}
   const renderScreen = () => {
     switch (currentScreen) {
       case 'configuracoes':
@@ -101,6 +118,13 @@ export default function App() {
             petId={selectedPet}
             onBack={handleBackFromEdit}
           />
+        )}
+        {currentScreen === 'add' && (
+          <AddPetScreen 
+            onBack={handleBackFromAdd}
+          />
+        )}
+        {currentScreen === 'diary' && (
         );
       case 'diary':
         return (
