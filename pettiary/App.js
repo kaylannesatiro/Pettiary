@@ -1,3 +1,7 @@
+import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { PetsProvider } from './components/contexts/Pets.Context';
+import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -48,6 +52,9 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <PetsProvider>
+        <RegisteredPetsScreen />
+      </PetsProvider>
       <PaperProvider theme={theme}>
         {renderScreen()}
         <StatusBar style="dark" backgroundColor="#E1D8CF" />
