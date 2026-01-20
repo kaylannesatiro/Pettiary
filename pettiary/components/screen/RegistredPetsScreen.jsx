@@ -16,7 +16,7 @@ import Button from '../ui/Button';
 import Card from '../display/Card';
 import BottomNav from '../navigation/BottomNav';
 
-const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onOpenDiaryList }) => {
+const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onOpenDiaryList, onNavigate, onAddPet }) => {
   const insets = useSafeAreaInsets();
   const { pets, toggleFavorite, getPetsByType, getFavoritePets } = usePets();
   const [searchQuery, setSearchQuery] = useState('');

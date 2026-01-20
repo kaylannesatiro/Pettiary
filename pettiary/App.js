@@ -35,7 +35,6 @@ const theme = {
 };
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('diaryList');
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
   const [galleryPhotos, setGalleryPhotos] = useState([]);
@@ -55,9 +54,8 @@ export default function App() {
     setCurrentScreen('diary');
   };
 
-
   const handleBackToList = () => {
-    setCurrentScreen('list');
+    setCurrentScreen('animais');
     setSelectedPet(null);
   };
 
@@ -82,26 +80,8 @@ export default function App() {
   };
 
   const handleBackFromAdd = () => {
-    setCurrentScreen('list');
+    setCurrentScreen('animais');
   };
-
-  return (
-    <SafeAreaProvider>
-      <PetsProvider>
-        {currentScreen === 'list' && (
-          <RegisteredPetsScreen 
-            onOpenDiary={handleOpenPetInfo}
-            onOpenDiaryDirect={handleOpenDiaryDirect}
-            onOpenDiaryList={handleOpenDiaryList}
-          />
-        )}
-                {currentScreen === 'diaryList' && (
-                  <DiaryListScreen 
-                    navigation={{ goBack: handleBackToList }}
-                  />
-                )}
-        {currentScreen === 'info' && (
-            onAddPet={handleAddPet}
   const renderScreen = () => {
     switch (currentScreen) {
       case 'configuracoes':
@@ -110,6 +90,8 @@ export default function App() {
         return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
       case 'galeria':
         return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
+      case 'diaryList':
+        return <DiaryListScreen navigation={{ goBack: handleBackToList }} />;
       case 'animais':
       case 'list':
         return (
@@ -117,6 +99,8 @@ export default function App() {
             onOpenDiary={handleOpenPetInfo}
             onOpenDiaryDirect={handleOpenDiaryDirect}
             onNavigate={setCurrentScreen}
+            onOpenDiaryList={handleOpenDiaryList}
+            onAddPet={handleAddPet}
           />
         );
       case 'info':
@@ -134,13 +118,12 @@ export default function App() {
             petId={selectedPet}
             onBack={handleBackFromEdit}
           />
-        )}
-        {currentScreen === 'add' && (
+        );
+      case 'add':
+        return (
           <AddPetScreen 
             onBack={handleBackFromAdd}
           />
-        )}
-        {currentScreen === 'diary' && (
         );
       case 'diary':
         return (
