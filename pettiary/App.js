@@ -9,13 +9,13 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState('list');
   const [selectedPet, setSelectedPet] = useState(null);
 
-  const handleOpenPetInfo = (pet) => {
-    setSelectedPet(pet);
+  const handleOpenPetInfo = (petId) => {
+    setSelectedPet(petId);
     setCurrentScreen('info');
   };
 
-  const handleOpenDiaryDirect = (pet) => {
-    setSelectedPet(pet);
+  const handleOpenDiaryDirect = (petId) => {
+    setSelectedPet(petId);
     setCurrentScreen('diary');
   };
 
@@ -43,12 +43,7 @@ export default function App() {
         )}
         {currentScreen === 'info' && (
           <PetInfoScreen 
-            petName={selectedPet?.name}
-            petType={selectedPet?.type}
-            gender={selectedPet?.gender}
-            age={selectedPet?.age}
-            weight={selectedPet?.weight || 'N/A'}
-            breed={selectedPet?.breed || 'Vira-lata'}
+            petId={selectedPet}
             onBack={handleBackToList}
             onEdit={() => console.log('Editar pet')}
             onOpenDiary={handleOpenDiary}

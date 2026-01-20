@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { usePets } from '../contexts/Pets.Context';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import PetHeader from '../ui/PetHeader';
@@ -14,23 +15,20 @@ import InfoTag from '../ui/InfoTag';
 import Button from '../ui/Button';
 
 const PetInfoScreen = ({ 
-  petName = 'Lua', 
-  petImage = null,
-  petType = 'cat',
-  gender = 'Fêmea',
-  age = '6 meses',
-  weight = '2,4kg',
-  breed = 'Vira-lata',
+  petId,
   onBack,
   onEdit,
   onOpenDiary,
 }) => {
   const insets = useSafeAreaInsets();
+  const { getPetById, toggleFavorite } = usePets();
+  const pet = getPetById(petId);
+  if (!pet) return null;
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> 
       <PetHeader 
-        petName="" 
+        petName={pet.name} 
         onBack={onBack}
         rightIcon="create-outline"
         onRightIconPress={onEdit}
@@ -42,16 +40,16 @@ const PetInfoScreen = ({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.imageContainer}>
-          {petImage ? (
+          {pet.image ? (
             <Image 
-              source={petImage}
+              source={pet.image}
               style={styles.petImage}
               resizeMode="cover"
             />
           ) : (
             <View style={styles.placeholderContainer}>
               <Text style={styles.placeholderText}>
-                {petType === 'cat' ? '🐱' : '🐶'}
+                {pet.type === 'cat' ? '🐱' : '🐶'}
               </Text>
             </View>
           )}
@@ -59,9 +57,9 @@ const PetInfoScreen = ({
 
         <View style={styles.contentContainer}>
           <View style={styles.nameRow}>
-            <Text style={styles.petName}>{petName}</Text>
-            <TouchableOpacity style={styles.heartButton}>
-              <Ionicons name="heart-outline" size={28} color="#A0744F" />
+            <Text style={styles.petName}>{pet.name}</Text>
+            <TouchableOpacity style={styles.heartButton} onPress={() => toggleFavorite(pet.id)}>
+              <Ionicons name={pet.isFavorite ? 'heart' : 'heart-outline'} size={28} color="#A0744F" />
             </TouchableOpacity>
           </View>
 
@@ -69,14 +67,14 @@ const PetInfoScreen = ({
 
           <View style={styles.infoGrid}>
             <View style={styles.infoRow}>
-              <InfoTag text={gender} style={styles.infoTag} />
+              <InfoTag text={pet.gender} style={styles.infoTag} />
               <View style={styles.tagSpacer} />
-              <InfoTag text={age} style={styles.infoTag} />
+              <InfoTag text={pet.age} style={styles.infoTag} />
             </View>
             <View style={styles.infoRow}>
-              <InfoTag text={weight} style={styles.infoTag} />
+              <InfoTag text={pet.weight} style={styles.infoTag} />
               <View style={styles.tagSpacer} />
-              <InfoTag text={breed} style={styles.infoTag} />
+              <InfoTag text={pet.breed} style={styles.infoTag} />
             </View>
           </View>
 

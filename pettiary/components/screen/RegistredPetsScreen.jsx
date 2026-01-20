@@ -43,7 +43,7 @@ const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect }) => {
 
   const handleCardPress = (pet) => {
     if (onOpenDiary) {
-      onOpenDiary(pet);
+      onOpenDiary(pet.id);
     }
   };
 
