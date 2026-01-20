@@ -56,6 +56,10 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     return eventMap[eventType];
   };
 
+  const handleGenerateReport = () => {
+    alert('Funcionalidade de gerar relatório em desenvolvimento');
+  };
+
   const addEventToCalendar = (eventType) => {
     setDiaryData(prev => {
       const currentEvents = prev.eventos[selectedDay] || [];
@@ -325,6 +329,14 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
               <Text style={styles.legendText}>Banho/Tosa</Text>
             </View>
           </View>
+
+          <TouchableOpacity 
+            style={styles.reportButton}
+            onPress={handleGenerateReport}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.reportButtonText}>Gerar Relatório</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </View>
@@ -531,6 +543,19 @@ const styles = StyleSheet.create({
   modalButtonText: {
     fontSize: 16,
     fontFamily: 'Outfit_600SemiBold',
+    color: '#FFFFFF',
+  },
+  reportButton: {
+    backgroundColor: '#8B6F47',
+    paddingVertical: 16,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  reportButtonText: {
+    fontSize: 15,
+    fontFamily: 'Outfit_300Light',
     color: '#FFFFFF',
   },
 });
