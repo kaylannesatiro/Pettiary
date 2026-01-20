@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   StatusBar,
   Alert,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Switch, ActivityIndicator } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,7 +17,7 @@ import EditProfileModal from '../components/ui/EditProfileModal';
 import ChangePasswordModal from '../components/ui/ChangePasswordModal';
 import { userService } from '../services/userService';
 
-const ConfigScreen = ({ onNavigate, userName, setUserName }) => {
+const ConfigScreen = ({ onNavigate, userName, setUserName, profilePhoto, setProfilePhoto }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [activeRoute, setActiveRoute] = useState('configuracoes');
@@ -47,6 +49,26 @@ const ConfigScreen = ({ onNavigate, userName, setUserName }) => {
     } catch (error) {
       console.error('Erro ao alterar senha:', error);
       throw new Error(error.response?.data?.error || 'Erro ao alterar senha');
+    }
+  };
+
+  const handleSelectProfilePhoto = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      Alert.alert('Permissão negada', 'Você precisa permitir o acesso à galeria para selecionar uma foto.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setProfilePhoto({ uri: result.assets[0].uri });
     }
   };
 
@@ -125,12 +147,20 @@ const ConfigScreen = ({ onNavigate, userName, setUserName }) => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.profileSection}>
-            <View style={styles.profileIconContainer}>
-              <MaterialIcons name="account-circle" size={48} color="#9B7653" />
-            </View>
+            <TouchableOpacity 
+              style={styles.profileIconContainer}
+              onPress={handleSelectProfilePhoto}
+              activeOpacity={0.7}
+            >
+              {profilePhoto ? (
+                <Image source={profilePhoto} style={styles.profileImage} />
+              ) : (
+                <MaterialIcons name="account-circle" size={48} color="#9B7653" />
+              )}
+            </TouchableOpacity>
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>{userName}</Text>
-              <Text style={styles.profileSubtitle}>Configurações da Conta</Text>
+              <Text style={styles.profileSubtitle}>Toque na foto para alterar</Text>
             </View>
           </View>
 
@@ -251,6 +281,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#D5C0AB',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
   profileInfo: {
     flex: 1,

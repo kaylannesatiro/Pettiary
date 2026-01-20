@@ -37,6 +37,7 @@ const theme = {
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
+  const [profilePhoto, setProfilePhoto] = useState(null);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
 
@@ -85,13 +86,13 @@ export default function App() {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'configuracoes':
-        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
+        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} profilePhoto={profilePhoto} setProfilePhoto={setProfilePhoto} />;
       case 'chatbot':
         return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
       case 'galeria':
         return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
       case 'diaryList':
-        return <DiaryListScreen navigation={{ goBack: handleBackToList }} />;
+        return <DiaryListScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} />;
       case 'animais':
       case 'list':
         return (
@@ -117,6 +118,7 @@ export default function App() {
           <EditPetScreen 
             petId={selectedPet}
             onBack={handleBackFromEdit}
+            onDelete={handleBackToList}
           />
         );
       case 'add':
@@ -134,7 +136,7 @@ export default function App() {
         );
       case 'inicial':
       default:
-        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} profilePhoto={profilePhoto} />;
     }
   };
 

@@ -5,6 +5,7 @@ import {
   StyleSheet, 
   TouchableOpacity,
   StatusBar,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
@@ -14,7 +15,7 @@ import QuickActionButton from '../components/ui/QuickActionButton';
 import ActionButton from '../components/ui/ActionButton';
 import BottomNav from '../components/navigation/BottomNav';
 
-const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
+const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto }) => {
   const [activeRoute, setActiveRoute] = useState('inicial');
 
   // Dados de exemplo
@@ -60,12 +61,13 @@ const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
           <Text variant="headlineMedium" style={styles.greeting}>
             Olá, {userName}
           </Text>
-          <TouchableOpacity 
-            style={styles.profileButton}
-            activeOpacity={0.7}
-          >
-            <MaterialIcons name="account-circle" size={42} color="#9B7653" />
-          </TouchableOpacity>
+          <View style={styles.profileButton}>
+            {profilePhoto ? (
+              <Image source={profilePhoto} style={styles.profileImage} />
+            ) : (
+              <MaterialIcons name="account-circle" size={42} color="#9B7653" />
+            )}
+          </View>
         </View>
 
         <ScrollView 
@@ -116,7 +118,7 @@ const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
             <ActionButton
               icon="menu-book"
               label="Diário"
-              onPress={() => console.log('Diário')}
+              onPress={() => onNavigate && onNavigate('diaryList')}
             />
             <ActionButton
               icon="collections"
@@ -166,6 +168,13 @@ const styles = StyleSheet.create({
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 22,
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
   },
   scrollView: {
     flex: 1,

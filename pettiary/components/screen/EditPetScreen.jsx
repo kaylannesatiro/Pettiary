@@ -23,8 +23,8 @@ const BREEDS = [
   'Periquito', 'Arara', 'Canário', 'Tartaruga', 'Iguana'
 ].sort();
 
-const EditPetScreen = ({ petId, onBack }) => {
-  const { getPetById, updatePet } = usePets();
+const EditPetScreen = ({ petId, onBack, onDelete }) => {
+  const { getPetById, updatePet, removePet } = usePets();
   const pet = getPetById(petId);
   const ageMatch = pet?.age ? pet.age.match(/(\d+)\s*(meses|anos)/) : null;
   const weightMatch = pet?.weight ? pet.weight.match(/(\d+(?:\.\d+)?)\s*(kg|g)/) : null;
@@ -83,6 +83,32 @@ const EditPetScreen = ({ petId, onBack }) => {
     const weight = `${weightNumber} ${weightUnit}`;
     updatePet(petId, { name, age, weight, breed, image });
     if (onBack) onBack();
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Excluir Pet',
+      `Tem certeza que deseja excluir ${name}? Esta ação não pode ser desfeita.`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          style: 'destructive',
+          onPress: () => {
+            removePet(petId);
+            if (onDelete) {
+              onDelete();
+            } else if (onBack) {
+              onBack();
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   if (!pet) return null;
@@ -196,6 +222,9 @@ const EditPetScreen = ({ petId, onBack }) => {
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Salvar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Text style={styles.deleteText}>Excluir Pet</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cancelButton} onPress={onBack}>
           <Text style={styles.cancelText}>Cancelar</Text>
@@ -383,6 +412,21 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     color: '#563218',
+    fontSize: 16,
+    fontFamily: 'Outfit_400Regular',
+  },
+  deleteButton: {
+    backgroundColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: '#B00020',
+    padding: 14,
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  deleteText: {
+    color: '#B00020',
     fontSize: 16,
     fontFamily: 'Outfit_400Regular',
   },
