@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Modal,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -29,6 +30,7 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   });
 
   const [selectedDay, setSelectedDay] = useState(19);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const changeMonth = (direction) => {
     const newMonth = new Date(currentMonth);
@@ -38,6 +40,20 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
 
   const handleDayPress = (day) => {
     setSelectedDay(day);
+    const dayEvents = diaryData.eventos[day];
+    if (dayEvents && dayEvents.length > 0) {
+      setModalVisible(true);
+    }
+  };
+
+  const getEventInfo = (eventType) => {
+    const eventMap = {
+      medicacao: { name: 'Medicação', color: '#F5AE72', icon: 'medical' },
+      vacinacao: { name: 'Vacinação', color: '#DB6348', icon: 'fitness' },
+      veterinario: { name: 'Veterinário', color: '#5DA6CD', icon: 'medkit' },
+      banho: { name: 'Banho/Tosa', color: '#6EA838', icon: 'water' }
+    };
+    return eventMap[eventType];
   };
 
   const addEventToCalendar = (eventType) => {
@@ -157,6 +173,49 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#D5C0AB" />
       
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Dia {selectedDay}</Text>
+              <TouchableOpacity 
+                onPress={() => setModalVisible(false)}
+                style={styles.closeButton}
+              >
+                <Ionicons name="close" size={28} color="#8B6F47" />
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.modalBody}>
+              <Text style={styles.modalSubtitle}>Eventos agendados:</Text>
+              {diaryData.eventos[selectedDay]?.map((eventType, index) => {
+                const eventInfo = getEventInfo(eventType);
+                return (
+                  <View key={index} style={styles.eventItem}>
+                    <View style={[styles.eventIcon, { backgroundColor: eventInfo.color }]}>
+                      <Ionicons name={eventInfo.icon} size={20} color="#FFFFFF" />
+                    </View>
+                    <Text style={styles.eventName}>{eventInfo.name}</Text>
+                  </View>
+                );
+              })}
+            </View>
+            
+            <TouchableOpacity 
+              style={styles.modalButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.modalButtonText}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
@@ -405,6 +464,74 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Outfit_300Light',
     color: '#5C4A3A',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#E1D8CF',
+    borderRadius: 24,
+    padding: 24,
+    width: '85%',
+    maxWidth: 400,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 26,
+    fontFamily: 'Outfit_600SemiBold',
+    color: '#362013',
+  },
+  closeButton: {
+    padding: 4,
+  },
+  modalBody: {
+    marginBottom: 20,
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    fontFamily: 'Outfit_300Light',
+    color: '#5C4A3A',
+    marginBottom: 16,
+  },
+  eventItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#D5C0AB',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 10,
+  },
+  eventIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  eventName: {
+    fontSize: 16,
+    fontFamily: 'Outfit_300Light',
+    color: '#362013',
+  },
+  modalButton: {
+    backgroundColor: '#8B6F47',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
+    color: '#FFFFFF',
   },
 });
 
