@@ -14,9 +14,9 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   const insets = useSafeAreaInsets();
   
   const [diaryData, setDiaryData] = useState({
-    alimentacao: [false, false, false, false, false, false, false],
-    passeio: [false, false, false, false, false, false, false],
-    anotacao: [false, false, false, false, false, false, false],
+    alimentacao: [false, true, false, true, true, true, true],
+    passeio: [true, true, false, true, true, true, true],
+    anotacao: [false, true, false, true, true, true, true],
   });
 
   const renderWeeklyView = () => (
