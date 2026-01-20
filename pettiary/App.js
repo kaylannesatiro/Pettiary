@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider, MD3LightTheme } from 'react-native-paper';
 import InitialScreen from './screens/InitialScreen';
+import ConfigScreen from './screens/ConfigScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -25,11 +26,24 @@ const theme = {
 };
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('inicial');
+  const [userName, setUserName] = useState('CK');
+
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'configuracoes':
+        return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
+      case 'inicial':
+      default:
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
+    }
+  };
+
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <InitialScreen />
-        <StatusBar style="dark" backgroundColor="#E8DCC8" />
+        {renderScreen()}
+        <StatusBar style="dark" backgroundColor="#E1D8CF" />
       </PaperProvider>
     </SafeAreaProvider>
   );
