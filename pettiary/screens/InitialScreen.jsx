@@ -102,7 +102,7 @@ const InitialScreen = ({ onNavigate, userName = 'CK' }) => {
             <TouchableOpacity 
               style={styles.assistantButton}
               activeOpacity={0.8}
-              onPress={() => console.log('Assistente')}
+              onPress={() => onNavigate && onNavigate('chatbot')}
             >
               <Text style={styles.assistantText}>Assistente Virtual</Text>
             </TouchableOpacity>

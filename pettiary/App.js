@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider, MD3LightTheme } from 'react-native-paper';
 import InitialScreen from './screens/InitialScreen';
 import ConfigScreen from './screens/ConfigScreen';
+import ChatBotScreen from './screens/ChatBotScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -33,6 +34,8 @@ export default function App() {
     switch (currentScreen) {
       case 'configuracoes':
         return <ConfigScreen onNavigate={setCurrentScreen} userName={userName} setUserName={setUserName} />;
+      case 'chatbot':
+        return <ChatBotScreen onClose={() => setCurrentScreen('inicial')} />;
       case 'inicial':
       default:
         return <InitialScreen onNavigate={setCurrentScreen} userName={userName} />;
