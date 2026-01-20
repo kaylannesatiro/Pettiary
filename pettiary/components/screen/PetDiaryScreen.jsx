@@ -20,8 +20,10 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   });
 
   const toggleWeeklyActivity = (activity, index) => {
-    // Bug: não está atualizando o estado
-    console.log('Tentando atualizar', activity, index);
+    setDiaryData(prev => ({
+      ...prev,
+      [activity]: prev[activity].map((val, i) => i === index ? !val : val)
+    }));
   };
 
   const renderWeeklyView = () => (
