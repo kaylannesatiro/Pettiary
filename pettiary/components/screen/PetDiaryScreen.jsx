@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import Calendar from '../modules/Calendar';
 
 const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   const insets = useSafeAreaInsets();
   
+  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 6, 1));
   const [diaryData, setDiaryData] = useState({
     alimentacao: [false, true, false, true, true, true, true],
     passeio: [true, true, false, true, true, true, true],
@@ -21,6 +23,16 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   });
 
   const [selectedDay, setSelectedDay] = useState(19);
+
+  const changeMonth = (direction) => {
+    const newMonth = new Date(currentMonth);
+    newMonth.setMonth(newMonth.getMonth() + direction);
+    setCurrentMonth(newMonth);
+  };
+
+  const handleDayPress = (day) => {
+    setSelectedDay(day);
+  };
 
   const addEventToCalendar = (eventType) => {
     setDiaryData(prev => {
@@ -218,6 +230,16 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
                 </TouchableOpacity>
               </View>
             </View>
+          </View>
+
+          <View style={styles.cardContainer}>
+            <Calendar
+              currentMonth={currentMonth}
+              onMonthChange={changeMonth}
+              eventos={diaryData.eventos}
+              selectedDay={selectedDay}
+              onDayPress={handleDayPress}
+            />
           </View>
         </ScrollView>
       </View>
