@@ -11,6 +11,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Calendar from '../modules/Calendar';
+import PetHeader from '../ui/PetHeader';
 
 const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   const insets = useSafeAreaInsets();
@@ -221,13 +222,7 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
       </Modal>
 
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={32} color="#8B6F47" />
-          </TouchableOpacity>
-          <Text style={styles.title}>{petName}</Text>
-          <View style={styles.placeholder} />
-        </View>
+        <PetHeader petName={petName} onBack={onBack} />
 
         <ScrollView
           style={styles.scrollView}
@@ -351,27 +346,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E1D8CF',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    height: 64,
-    backgroundColor: '#D5C0AB',
-  },
-  backButton: {
-    padding: 4,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: 'Outfit_300Light',
-    color: '#5C4A3A',
-    flex: 1,
-    textAlign: 'center',
-  },
-  placeholder: {
-    width: 32,
   },
   scrollView: {
     flex: 1,
