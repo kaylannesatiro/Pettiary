@@ -1,14 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
-const Card = ({ pet }) => {
+import { TouchableOpacity } from 'react-native';
+import Button from '../ui/Button';
+
+const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <TouchableOpacity 
+        style={styles.imageContainer}
+        onPress={onPress}
+        activeOpacity={0.8}
+      >
         <View style={[styles.image, styles.placeholderContainer]}>
           <Text style={styles.placeholderText}>
             {pet.type === 'cat' ? '🐱' : '🐶'}
           </Text>
+        </View>
         <TouchableOpacity 
           style={styles.favoriteButton}
           onPress={(e) => {
@@ -21,22 +27,13 @@ const Card = ({ pet }) => {
             {pet.isFavorite ? '❤️' : '🤍'}
           </Text>
         </TouchableOpacity>
-      marginHorizontal: 16,
-      marginVertical: 12,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.18,
-      shadowRadius: 6,
-      elevation: 4,
-    },
-      <TouchableOpacity style={{marginTop: 10, backgroundColor: '#8B6F47', borderRadius: 12, padding: 12, alignItems: 'center'}}>
-        <Text style={{color: '#fff', fontSize: 16}}>Diário do Pet</Text>
       </TouchableOpacity>
-    </View>
-  );
-};
+      <View style={styles.infoContainer}>
+        <Text style={styles.name}>{pet.name}</Text>
+        <Text style={styles.details}>
+          {pet.gender} • {pet.age}
+        </Text>
       </View>
-
       <Button
         title="Diário do Pet"
         variant="action"
@@ -53,33 +50,27 @@ const Card = ({ pet }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#D5C0AB',
-    borderRadius: 20,
-    padding: 20,
-    marginHorizontal: 20,
-    marginVertical: 10,
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <View style={[styles.image, styles.placeholderContainer]}>
-            <Text style={styles.placeholderText}>
-              {pet.type === 'cat' ? '🐱' : '🐶'}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.name}>{pet.name}</Text>
-          <Text style={styles.details}>
-            {pet.gender} • {pet.age}
-          </Text>
-        </View>
-      </View>
+    borderRadius: 24,
+    padding: 24,
+    marginHorizontal: 16,
+    marginVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  imageContainer: {
+    position: 'relative',
     width: '100%',
     marginBottom: 14,
   },
   image: {
-    imageContainer: {
-      width: '100%',
-      marginBottom: 14,
-    },
+    width: '100%',
+    height: 240,
+    borderRadius: 16,
+  },
+  placeholderContainer: {
     backgroundColor: '#E1D8CF',
     justifyContent: 'center',
     alignItems: 'center',
