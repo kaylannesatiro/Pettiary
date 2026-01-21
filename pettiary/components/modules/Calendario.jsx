@@ -18,12 +18,10 @@ const Calendar = ({ currentMonth, onMonthChange, eventos = {}, selectedDay, onDa
 
     const days = [];
     
-    // Preencher dias vazios antes do primeiro dia
     for (let i = 0; i < firstDay; i++) {
       days.push(null);
     }
     
-    // Preencher dias do mês
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(day);
     }
@@ -56,7 +54,6 @@ const Calendar = ({ currentMonth, onMonthChange, eventos = {}, selectedDay, onDa
     if (colors.length === 0) return null;
     if (colors.length === 1) return { backgroundColor: colors[0] };
     
-    // Para múltiplas cores, dividir em fatias circulares
     if (colors.length === 2) {
       return (
         <View style={styles.multiColorContainer}>

@@ -12,9 +12,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Switch, ActivityIndicator } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
-import BottomNav from '../components/navigation/BottomNav';
-import EditProfileModal from '../components/ui/EditProfileModal';
-import ChangePasswordModal from '../components/ui/ChangePasswordModal';
+import BottomNav from '../components/navigation/Menu';
+import EditProfileModal from '../components/ui/ModalEditarPerfil';
+import ChangePasswordModal from '../components/ui/ModalMudarSenha';
 import { userService } from '../services/userService';
 
 const ConfigScreen = ({ onNavigate, userName, setUserName, profilePhoto, setProfilePhoto }) => {

@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Calendar from '../modules/Calendar';
-import PetHeader from '../ui/PetHeader';
+import Calendar from '../components/modules/Calendario';
+import PetHeader from '../components/ui/CabecalhoPet';
 
 const PetDiaryScreen = ({ petId, petName = 'Lua', onBack, petEvents = {}, setPetEvents }) => {
   const insets = useSafeAreaInsets();

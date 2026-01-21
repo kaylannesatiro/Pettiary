@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider, MD3LightTheme } from 'react-native-paper';
-import { PetsProvider, usePets } from './components/contexts/Pets.Context';
-import InitialScreen from './screens/InitialScreen';
-import ConfigScreen from './screens/ConfigScreen';
-import ChatBotScreen from './screens/ChatBotScreen';
-import GalleryScreen from './screens/GalleryScreen';
-import RegisteredPetsScreen from './components/screen/RegistredPetsScreen';
-import DiaryListScreen from './components/screen/DiaryListScreen';
-import PetInfoScreen from './components/screen/PetInfoScreen';
-import PetDiaryScreen from './components/screen/PetDiaryScreen';
-import EditPetScreen from './components/screen/EditPetScreen';
-import AddPetScreen from './components/screen/AddPetScreen';
-import NotesScreen from './screens/NotesScreen';
+import { PetsProvider, usePets } from './components/contexts/Pets.Contexto';
+import InitialScreen from './screens/TelaInicial';
+import ConfigScreen from './screens/TelaConfig';
+import ChatBotScreen from './screens/TelaChatBot';
+import GalleryScreen from './screens/TelaGaleria';
+import RegisteredPetsScreen from './screens/TelaPetsRegistrados';
+import DiaryListScreen from './screens/TelaListaDiarios';
+import PetInfoScreen from './screens/TelaInfoPet';
+import PetDiaryScreen from './screens/TelaDiarioPet';
+import EditPetScreen from './screens/TelaEditarPet';
+import AddPetScreen from './screens/TelaAdicionarPet';
+import NotesScreen from './screens/TelaNotas';
 
 // Tema com cores EXATAS da imagem
 const theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#9B7653',        // Marrom dos bot√µes
+    primary: '#9B7653',        // Marrom dos botıes
     secondary: '#B8956A',      
     tertiary: '#7D5E42',       
     background: '#E1D8CF',     // Bege/creme do fundo principal
@@ -141,7 +141,7 @@ function AppContent() {
       };
     });
 
-    alert(`Anota√ß√£o salva para ${pet.name}!`);
+    alert(`AnotaÁ„o salva para ${pet.name}!`);
     setCurrentScreen('inicial');
   };
 

@@ -14,11 +14,11 @@ import {
   Portal,
   ActivityIndicator
 } from 'react-native-paper';
-import PetCard from '../components/display/PetCard';
-import StatCard from '../components/display/StatCard';
-import Header from '../components/navigation/Header';
-import FloatingActionButton from '../components/ui/FloatingActionButton';
-import ConfirmDialog from '../components/ui/ConfirmDialog';
+import PetCard from '../components/display/CartaoPet';
+import StatCard from '../components/display/CartaoEstatistica';
+import Header from '../components/navigation/Cabecalho';
+import FloatingActionButton from '../components/ui/BotaoAcaoFlutuante';
+import ConfirmDialog from '../components/ui/DialogoConfirmacao';
 import { petService } from '../services/petService';
 
 const HomeScreen = ({ navigation }) => {

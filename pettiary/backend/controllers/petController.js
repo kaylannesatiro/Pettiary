@@ -1,32 +1,6 @@
 const Pet = require('../models/Pet');
 
-// Banco de dados em memória (substitua por banco real em produção)
-let pets = [
-new Pet(
-    'Rex',
-    'dog',
-    'Golden Retriever',
-    '2020-05-15',
-    'https://images.unsplash.com/photo-1633722715463-d30f4f325e24',
-    '#FF6B35'
-),
-new Pet(
-    'Luna',
-    'cat',
-    'Siamese',
-    '2019-08-20',
-    'https://images.unsplash.com/photo-1573865526739-10c1d3a1f0cc',
-    '#6A4C93'
-),
-new Pet(
-    'Max',
-    'dog',
-    'Beagle',
-    '2021-03-10',
-    'https://images.unsplash.com/photo-1543466835-00a7907e9de1',
-    '#1982C4'
-)
-];
+let pets = [];
 
 // GET 
 const getAllPets = (req, res) => {

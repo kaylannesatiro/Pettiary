@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { usePets } from '../contexts/Pets.Context';
-import SearchBar from '../inputs/SearchBar';
-import Button from '../ui/Button';
-import Card from '../display/Card';
-import BottomNav from '../navigation/BottomNav';
+import { usePets } from '../components/contexts/Pets.Contexto';
+import SearchBar from '../components/inputs/BarraPesquisa';
+import Button from '../components/ui/Botao';
+import Card from '../components/display/Card';
+import BottomNav from '../components/navigation/Menu';
 
 const RegisteredPetsScreen = ({ onOpenDiary, onOpenDiaryDirect, onOpenDiaryList, onNavigate, onAddPet }) => {
   const insets = useSafeAreaInsets();

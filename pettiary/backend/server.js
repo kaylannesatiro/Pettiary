@@ -17,11 +17,11 @@ app.use('/api/activities', activityRoutes);
 app.use('/api/users', userRoutes);
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'A API do Pettiary está funcionando!' });
+    res.json({ status: 'OK', message: 'A API está rodando' });
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor Pettiary rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
 
 module.exports = app;

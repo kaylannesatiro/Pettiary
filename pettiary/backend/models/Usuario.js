@@ -1,22 +1,15 @@
-// Modelo de usuário (simulado)
-// Em produção, você usaria um banco de dados real
 
 let users = [
   {
     id: 1,
-    name: 'CK',
-    email: 'ck@pettiary.com',
-    password: '123456', // Em produção, use hash de senha
+    name: 'Carla-Kaylanne',
+    password: '123456',
   }
 ];
 
 const User = {
   findById: (id) => {
     return users.find(user => user.id === id);
-  },
-
-  findByEmail: (email) => {
-    return users.find(user => user.email === email);
   },
 
   updateProfile: (id, data) => {

@@ -36,7 +36,7 @@ const EditProfileModal = ({ visible, onClose, currentName, onSave }) => {
           <View style={styles.header}>
             <Text style={styles.title}>Editar Perfil</Text>
             <TouchableOpacity onPress={onClose}>
-              <MaterialIcons name="close" size={24} color="#2C1810" />
+              <MaterialIcons name="close" size={24} color="#F48FB1" />
             </TouchableOpacity>
           </View>
 
@@ -46,8 +46,8 @@ const EditProfileModal = ({ visible, onClose, currentName, onSave }) => {
               value={name}
               onChangeText={setName}
               mode="outlined"
-              outlineColor="#D5C0AB"
-              activeOutlineColor="#9B7653"
+              outlineColor="#FFD6E8"
+              activeOutlineColor="#FCE4EC"
               style={styles.input}
             />
           </View>
@@ -57,7 +57,7 @@ const EditProfileModal = ({ visible, onClose, currentName, onSave }) => {
               mode="outlined"
               onPress={onClose}
               style={styles.cancelButton}
-              textColor="#7D5E42"
+              textcolor="#F48FB1"
             >
               Cancelar
             </Button>
@@ -67,7 +67,7 @@ const EditProfileModal = ({ visible, onClose, currentName, onSave }) => {
               loading={loading}
               disabled={loading}
               style={styles.saveButton}
-              buttonColor="#A0744F"
+              buttonColor="#FF80AB"
             >
               Salvar
             </Button>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   modal: {
-    backgroundColor: '#E1D8CF',
+    backgroundColor: '#FFF5F7',
     borderRadius: 20,
     width: '100%',
     maxWidth: 400,
@@ -103,18 +103,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#D5C0AB',
+    borderBottomColor: '#FFD6E8',
   },
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#2C1810',
+    color: '#C2185B',
   },
   content: {
     padding: 20,
   },
   input: {
-    backgroundColor: '#E1D8CF',
+    backgroundColor: '#FFF5F7',
   },
   footer: {
     flexDirection: 'row',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   cancelButton: {
-    borderColor: '#D5C0AB',
+    borderColor: '#FFD6E8',
   },
   saveButton: {
     elevation: 0,

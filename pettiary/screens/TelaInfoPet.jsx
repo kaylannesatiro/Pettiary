@@ -7,12 +7,12 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { usePets } from '../contexts/Pets.Context';
+import { usePets } from '../components/contexts/Pets.Contexto';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import PetHeader from '../ui/PetHeader';
-import InfoTag from '../ui/InfoTag';
-import Button from '../ui/Button';
+import PetHeader from '../components/ui/CabecalhoPet';
+import InfoTag from '../components/ui/EtiquetaInfo';
+import Button from '../components/ui/Botao';
 
 // Função para formatar idade do pet
 function formatAge(age) {

@@ -12,11 +12,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
-import { usePets } from '../components/contexts/Pets.Context';
-import EventCard from '../components/display/EventCard';
-import QuickActionButton from '../components/ui/QuickActionButton';
-import ActionButton from '../components/ui/ActionButton';
-import BottomNav from '../components/navigation/BottomNav';
+import { usePets } from '../components/contexts/Pets.Contexto';
+import EventCard from '../components/display/CardEvento';
+import QuickActionButton from '../components/ui/BotaoAcaoRapida';
+import ActionButton from '../components/ui/BotaoAcao';
+import BottomNav from '../components/navigation/Menu';
 
 const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = {}, setPetEvents, onOpenNotes }) => {
   const { pets } = usePets();

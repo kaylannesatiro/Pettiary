@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { usePets } from '../contexts/Pets.Context';
-import PetHeader from '../ui/PetHeader';
+import { usePets } from '../components/contexts/Pets.Contexto';
+import PetHeader from '../components/ui/CabecalhoPet';
 
 const DiaryListScreen = ({ navigation, petEvents = {} }) => {
   const insets = useSafeAreaInsets();

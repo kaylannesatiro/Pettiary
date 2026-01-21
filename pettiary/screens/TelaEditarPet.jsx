@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { usePets } from '../contexts/Pets.Context';
+import { usePets } from '../components/contexts/Pets.Contexto';
 
 const BREEDS = [
   // Cachorros

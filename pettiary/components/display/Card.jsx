@@ -1,7 +1,7 @@
 
 import { TouchableOpacity, StyleSheet, Text, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Button from '../ui/Button';
+import Button from '../ui/Botao';
 
 const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
   return (
@@ -15,7 +15,7 @@ const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
           <Image source={pet.image} style={styles.image} resizeMode="cover" />
         ) : (
           <View style={[styles.image, styles.placeholderContainer]}>
-            <Ionicons name="paw" size={80} color="#563218" />
+            <Ionicons name="paw" size={80} color="#9B7653" />
           </View>
         )}
         <TouchableOpacity 
@@ -54,7 +54,7 @@ const Card = ({ pet, onPress, onDiaryPress, onToggleFavorite }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D5C0AB',
+    backgroundColor: '#E3D0BC',
     borderRadius: 24,
     padding: 24,
     marginHorizontal: 16,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   placeholderContainer: {
-    backgroundColor: '#E1D8CF',
+    backgroundColor: '#F5F0E8',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontFamily: 'Outfit_300Light',
-    color: '#2D1810',
+    color: '#2C1810',
     marginBottom: 4,
   },
   details: {
     fontSize: 15,
     fontFamily: 'Outfit_300Light',
-    color: '#6B5544',
+    color: '#4A3829',
   },
 });
 

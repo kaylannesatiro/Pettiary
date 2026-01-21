@@ -1,16 +1,15 @@
-const User = require('../models/User');
+const User = require('../models/Usuario');
 
-// Obter perfil do usuário
+
 exports.getProfile = (req, res) => {
   try {
-    const userId = req.params.id || 1; // Por padrão, usa ID 1
+    const userId = req.params.id || 1; 
     const user = User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
 
-    // Não enviar a senha
     const { password, ...userWithoutPassword } = user;
     res.json(userWithoutPassword);
   } catch (error) {
@@ -18,7 +17,6 @@ exports.getProfile = (req, res) => {
   }
 };
 
-// Atualizar perfil
 exports.updateProfile = (req, res) => {
   try {
     const userId = req.params.id || 1;
