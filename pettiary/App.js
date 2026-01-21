@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider, MD3LightTheme } from 'react-native-paper';
-import { PetsProvider } from './components/contexts/Pets.Context';
+import { PetsProvider, usePets } from './components/contexts/Pets.Context';
 import InitialScreen from './screens/InitialScreen';
 import ConfigScreen from './screens/ConfigScreen';
 import ChatBotScreen from './screens/ChatBotScreen';
@@ -35,23 +35,38 @@ const theme = {
 };
 
 export default function App() {
+  return (
+    <SafeAreaProvider>
+      <PetsProvider>
+        <PaperProvider theme={theme}>
+          <AppContent />
+        </PaperProvider>
+      </PetsProvider>
+    </SafeAreaProvider>
+  );
+}
+
+function AppContent() {
+  const { getPetById } = usePets();
   const [currentScreen, setCurrentScreen] = useState('inicial');
   const [userName, setUserName] = useState('CK');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+  const [petEvents, setPetEvents] = useState({});
 
   const handleOpenPetInfo = (petId) => {
     setSelectedPet(petId);
     setCurrentScreen('info');
   };
 
-  const handleOpenDiaryDirect = (petId) => {
-    setSelectedPet(petId);
+  const handleOpenDiaryDirect = (pet) => {
+    setSelectedPet(pet);
     setCurrentScreen('diary');
   };
 
-  const handleOpenDiary = () => {
+  const handleOpenDiary = (pet) => {
+    setSelectedPet(pet);
     setCurrentScreen('diary');
   };
 
@@ -105,12 +120,13 @@ export default function App() {
           />
         );
       case 'info':
+        const infoPet = getPetById(selectedPet);
         return (
           <PetInfoScreen 
             petId={selectedPet}
             onBack={handleBackToList}
             onEdit={handleEditPet}
-            onOpenDiary={handleOpenDiary}
+            onOpenDiary={() => handleOpenDiary(infoPet)}
           />
         );
       case 'edit':
@@ -130,24 +146,23 @@ export default function App() {
       case 'diary':
         return (
           <PetDiaryScreen 
-            petName={selectedPet?.name} 
-            onBack={handleBackToList} 
+            petId={selectedPet?.id || selectedPet}
+            petName={selectedPet?.name || 'Pet'} 
+            onBack={handleBackToList}
+            petEvents={petEvents}
+            setPetEvents={setPetEvents}
           />
         );
       case 'inicial':
       default:
-        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} profilePhoto={profilePhoto} />;
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} profilePhoto={profilePhoto} petEvents={petEvents} />;
     }
   };
 
   return (
-    <SafeAreaProvider>
-      <PetsProvider>
-        <PaperProvider theme={theme}>
-          {renderScreen()}
-          <StatusBar style="dark" backgroundColor="#E1D8CF" />
-        </PaperProvider>
-      </PetsProvider>
-    </SafeAreaProvider>
+    <>
+      {renderScreen()}
+      <StatusBar style="dark" backgroundColor="#E1D8CF" />
+    </>
   );
 }

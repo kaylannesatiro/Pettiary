@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Calendar from '../modules/Calendar';
 import PetHeader from '../ui/PetHeader';
 
-const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
+const PetDiaryScreen = ({ petId, petName = 'Lua', onBack, petEvents = {}, setPetEvents }) => {
   const insets = useSafeAreaInsets();
   const today = new Date();
   
@@ -23,15 +23,48 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
     passeio: [false, false, false, false, false, false, false],
     anotacao: [false, false, false, false, false, false, false],
     eventos: {},
+    petName: petName,
+    currentMonth: today,
   });
 
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Carregar dados do pet quando mudar o petId
+  useEffect(() => {
+    if (petEvents[petId]) {
+      const loadedData = petEvents[petId];
+      setDiaryData(loadedData);
+      setCurrentMonth(new Date(loadedData.currentMonth || today.toISOString()));
+    } else {
+      // Pet novo, resetar dados
+      const newData = {
+        alimentacao: [false, false, false, false, false, false, false],
+        passeio: [false, false, false, false, false, false, false],
+        anotacao: [false, false, false, false, false, false, false],
+        eventos: {},
+        petName: petName,
+        currentMonth: today.toISOString(),
+      };
+      setDiaryData(newData);
+      setCurrentMonth(today);
+    }
+  }, [petId]);
+
   const changeMonth = (direction) => {
     const newMonth = new Date(currentMonth);
     newMonth.setMonth(newMonth.getMonth() + direction);
     setCurrentMonth(newMonth);
+    
+    if (setPetEvents) {
+      setPetEvents(prevEvents => ({
+        ...prevEvents,
+        [petId]: {
+          ...diaryData,
+          currentMonth: newMonth.toISOString(),
+        }
+      }));
+    }
   };
 
   const handleDayPress = (day) => {
@@ -59,6 +92,8 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
   const addEventToCalendar = (eventType) => {
     setDiaryData(prev => {
       const currentEvents = prev.eventos[selectedDay] || [];
+      let updatedData;
+      
       if (currentEvents.includes(eventType)) {
         const newEvents = currentEvents.filter(e => e !== eventType);
         const updatedEventos = { ...prev.eventos };
@@ -67,16 +102,32 @@ const PetDiaryScreen = ({ petName = 'Lua', onBack }) => {
         } else {
           updatedEventos[selectedDay] = newEvents;
         }
-        return { ...prev, eventos: updatedEventos };
+        updatedData = { 
+          ...prev, 
+          eventos: updatedEventos,
+          petName: petName,
+          currentMonth: currentMonth.toISOString(),
+        };
       } else {
-        return {
+        updatedData = {
           ...prev,
           eventos: {
             ...prev.eventos,
             [selectedDay]: [...currentEvents, eventType]
-          }
+          },
+          petName: petName,
+          currentMonth: currentMonth.toISOString(),
         };
       }
+      
+      if (setPetEvents) {
+        setPetEvents(prevEvents => ({
+          ...prevEvents,
+          [petId]: updatedData
+        }));
+      }
+      
+      return updatedData;
     });
   };
 
@@ -346,7 +397,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 24,
   },
   weeklyContainer: {
     backgroundColor: '#E1D8CF',

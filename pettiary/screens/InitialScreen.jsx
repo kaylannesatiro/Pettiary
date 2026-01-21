@@ -15,23 +15,56 @@ import QuickActionButton from '../components/ui/QuickActionButton';
 import ActionButton from '../components/ui/ActionButton';
 import BottomNav from '../components/navigation/BottomNav';
 
-const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto }) => {
+const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = {} }) => {
   const [activeRoute, setActiveRoute] = useState('inicial');
 
-  // Dados de exemplo
-  
-  const upcomingEvents = [
-    {
-      title: 'Ir ao veterinário',
-      petName: 'Lua',
-      time: 'Hoje às 19h',
-    },
-    {
-      title: 'Levar para Tosa',
-      petName: 'Spike',
-      time: 'Daqui a 3 dias',
-    },
-  ];
+  const getUpcomingEvents = () => {
+    const today = new Date();
+    const allEvents = [];
+
+    Object.entries(petEvents).forEach(([petId, petData]) => {
+      const { petName, eventos } = petData;
+      Object.entries(eventos).forEach(([day, eventTypes]) => {
+        eventTypes.forEach(eventType => {
+          const eventDate = new Date(petData.currentMonth);
+          eventDate.setDate(parseInt(day));
+          
+          if (eventDate >= today) {
+            const eventNames = {
+              medicacao: 'Medicação',
+              vacinacao: 'Vacinação',
+              veterinario: 'Veterinário',
+              banho: 'Banho/Tosa'
+            };
+            
+            const diffTime = eventDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            let timeStr;
+            if (diffDays === 0) {
+              timeStr = 'Hoje';
+            } else if (diffDays === 1) {
+              timeStr = 'Amanhã';
+            } else {
+              timeStr = `Daqui a ${diffDays} dias`;
+            }
+            
+            allEvents.push({
+              title: eventNames[eventType],
+              petName: petName,
+              time: timeStr,
+              date: eventDate,
+            });
+          }
+        });
+      });
+    });
+
+    return allEvents
+      .sort((a, b) => a.date - b.date)
+      .slice(0, 2);
+  };
+
+  const upcomingEvents = getUpcomingEvents();
 
   const quickActions = [
     { icon: 'medication', label: 'Medicação', color: '#A0744F' },
