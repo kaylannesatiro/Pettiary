@@ -15,19 +15,18 @@ import EditPetScreen from './screens/TelaEditarPet';
 import AddPetScreen from './screens/TelaAdicionarPet';
 import NotesScreen from './screens/TelaNotas';
 
-// Tema com cores EXATAS da imagem
 const theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#9B7653',        // Marrom dos botões
+    primary: '#9B7653',    
     secondary: '#B8956A',      
     tertiary: '#7D5E42',       
-    background: '#E1D8CF',     // Bege/creme do fundo principal
+    background: '#E1D8CF',  
     surface: '#F5F0E8',        
-    surfaceVariant: '#D9C4B0', // Bege/rosado dos cards de evento
+    surfaceVariant: '#D9C4B0', 
     onPrimary: '#FFFFFF',      
-    onBackground: '#2C1810',   // Texto principal muito escuro
+    onBackground: '#2C1810', 
     onSurface: '#4A3829',      
     outline: '#C4B5A0',        
     error: '#B00020',
@@ -141,7 +140,7 @@ function AppContent() {
       };
     });
 
-    alert(`Anotação salva para ${pet.name}!`);
+    alert(`AnotaÃ§Ã£o salva para ${pet.name}!`);
     setCurrentScreen('inicial');
   };
 

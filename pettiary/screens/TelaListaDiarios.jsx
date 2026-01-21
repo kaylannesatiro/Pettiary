@@ -33,10 +33,19 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
   const currentEntries = useMemo(() => {
     const entries = [];
     const selectedDate = new Date(currentDate);
+    selectedDate.setHours(0, 0, 0, 0); // Zerar horas para comparação precisa
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Zerar horas do dia atual
+    
     const selectedDay = selectedDate.getDate();
     const selectedDayOfWeek = selectedDate.getDay();
     const selectedMonth = selectedDate.getMonth();
     const selectedYear = selectedDate.getFullYear();
+
+    // Não mostrar eventos futuros
+    if (selectedDate > today) {
+      return [];
+    }
 
     Object.entries(petEvents).forEach(([petId, petData]) => {
       const pet = pets.find(p => p.id === petId);
