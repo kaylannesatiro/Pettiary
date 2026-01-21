@@ -1,7 +1,7 @@
 const User = require('../models/Usuario');
 
 
-exports.getProfile = (req, res) => {
+function getProfile(req, res) {
   try {
     const userId = req.params.id || 1; 
     const user = User.findById(userId);
@@ -17,7 +17,7 @@ exports.getProfile = (req, res) => {
   }
 };
 
-exports.updateProfile = (req, res) => {
+function updateProfile(req, res) {
   try {
     const userId = req.params.id || 1;
     const { name, email } = req.body;
@@ -39,8 +39,8 @@ exports.updateProfile = (req, res) => {
   }
 };
 
-// Alterar senha
-exports.changePassword = (req, res) => {
+// Altera a senha do usuário
+function changePassword(req, res) {
   try {
     const userId = req.params.id || 1;
     const { currentPassword, newPassword } = req.body;
@@ -58,4 +58,11 @@ exports.changePassword = (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+}
+
+// Exporta as funções agrupadas em um objeto
+module.exports = {
+  getProfile,
+  updateProfile,
+  changePassword
 };

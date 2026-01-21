@@ -14,17 +14,6 @@ const PetCard = ({ pet, onPress, onEdit, onDelete }) => {
     return icons[species] || 'paw';
   };
 
-  const calculateAge = (birthDate) => {
-    const today = new Date();
-    const birth = new Date(birthDate);
-    const years = today.getFullYear() - birth.getFullYear();
-    const months = today.getMonth() - birth.getMonth();
-    
-    if (years < 1) {
-      return `${months} meses`;
-    }
-    return `${years} ${years === 1 ? 'ano' : 'anos'}`;
-  };
 
   return (
     <Card 
@@ -50,7 +39,7 @@ const PetCard = ({ pet, onPress, onEdit, onDelete }) => {
               {pet.name}
             </Text>
             <Text variant="bodyMedium" style={styles.details}>
-              {pet.breed} • {calculateAge(pet.birthDate)}
+              {pet.breed}
             </Text>
           </View>
         </View>

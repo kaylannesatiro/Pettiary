@@ -31,16 +31,16 @@ const getPetById = (req, res) => {
 
 // POST 
 const createPet = (req, res) => {
-const { name, species, breed, birthDate, photoUrl, color } = req.body;
+const { name, species, breed, photoUrl, color } = req.body;
 
-    if (!name || !species || !breed || !birthDate) {
+    if (!name || !species || !breed) {
         return res.status(400).json({
             success: false,
-            message: 'Campos obrigatórios: name, species, breed, birthDate'
+            message: 'Campos obrigatórios: name, species, breed'
         });
     }
 
-    const newPet = new Pet(name, species, breed, birthDate, photoUrl, color);
+    const newPet = new Pet(name, species, breed, photoUrl, color);
     pets.push(newPet);
 
     res.status(201).json({
