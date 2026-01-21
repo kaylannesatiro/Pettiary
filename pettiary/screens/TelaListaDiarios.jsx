@@ -29,20 +29,18 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
     setDate(formatted);
   };
 
-  // Gerar entradas do diário baseado nos petEvents
   const currentEntries = useMemo(() => {
     const entries = [];
     const selectedDate = new Date(currentDate);
-    selectedDate.setHours(0, 0, 0, 0); // Zerar horas para comparação precisa
+    selectedDate.setHours(0, 0, 0, 0); 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Zerar horas do dia atual
+    today.setHours(0, 0, 0, 0); 
     
     const selectedDay = selectedDate.getDate();
     const selectedDayOfWeek = selectedDate.getDay();
     const selectedMonth = selectedDate.getMonth();
     const selectedYear = selectedDate.getFullYear();
 
-    // Não mostrar eventos futuros
     if (selectedDate > today) {
       return [];
     }
@@ -51,12 +49,10 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
       const pet = pets.find(p => p.id === petId);
       if (!pet) return;
 
-      // Verificar eventos do calendário (medicação, vacinação, etc) para o dia específico
       if (petData.eventos && petData.eventos[selectedDay]) {
         const eventMonth = new Date(petData.currentMonth).getMonth();
         const eventYear = new Date(petData.currentMonth).getFullYear();
         
-        // Só mostrar se for o mesmo mês/ano
         if (eventMonth === selectedMonth && eventYear === selectedYear) {
           petData.eventos[selectedDay].forEach((eventType, idx) => {
             const eventLabels = {
@@ -79,7 +75,6 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
         }
       }
 
-      // Verificar atividades semanais (alimentação, passeio) para o dia da semana
       if (petData.alimentacao && petData.alimentacao[selectedDayOfWeek]) {
         entries.push({
           id: `${petId}-alimentacao-${selectedDay}`,
@@ -104,7 +99,6 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
         });
       }
 
-      // Verificar anotações
       if (petData.notes && petData.notes.length > 0) {
         petData.notes.forEach((note, idx) => {
           const noteDate = new Date(note.date);
@@ -127,12 +121,10 @@ const DiaryListScreen = ({ navigation, petEvents = {} }) => {
       }
     });
 
-    // Ordenar por data (mais recente primeiro)
     return entries.sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [currentDate, petEvents, pets]);
 
   const renderEntry = ({ item }) => {
-    // Determinar fonte da imagem
     let imageSource = null;
     if (item.petImage) {
       if (typeof item.petImage === 'string') {

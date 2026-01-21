@@ -1,7 +1,6 @@
 import api from './api';
 
 export const petService = {
-  // Buscar todos os pets
   getAllPets: async () => {
     try {
       const response = await api.get('/pets');
@@ -11,7 +10,6 @@ export const petService = {
     }
   },
 
-  // Buscar pet por ID
   getPetById: async (id) => {
     try {
       const response = await api.get(`/pets/${id}`);
@@ -21,7 +19,6 @@ export const petService = {
     }
   },
 
-  // Criar novo pet
   createPet: async (petData) => {
     try {
       const response = await api.post('/pets', petData);
@@ -31,7 +28,6 @@ export const petService = {
     }
   },
 
-  // Atualizar pet
   updatePet: async (id, petData) => {
     try {
       const response = await api.put(`/pets/${id}`, petData);
@@ -41,7 +37,6 @@ export const petService = {
     }
   },
 
-  // Deletar pet
   deletePet: async (id) => {
     try {
       const response = await api.delete(`/pets/${id}`);
@@ -53,7 +48,6 @@ export const petService = {
 };
 
 export const activityService = {
-  // Buscar todas as atividades
   getAllActivities: async (petId = null) => {
     try {
       const url = petId ? `/activities?petId=${petId}` : '/activities';
@@ -64,7 +58,6 @@ export const activityService = {
     }
   },
 
-  // Buscar atividade por ID
   getActivityById: async (id) => {
     try {
       const response = await api.get(`/activities/${id}`);
@@ -74,7 +67,6 @@ export const activityService = {
     }
   },
 
-  // Criar nova atividade
   createActivity: async (activityData) => {
     try {
       const response = await api.post('/activities', activityData);
@@ -84,7 +76,6 @@ export const activityService = {
     }
   },
 
-  // Alternar status de conclusão
   toggleActivityComplete: async (id) => {
     try {
       const response = await api.patch(`/activities/${id}/toggle`);
@@ -94,7 +85,6 @@ export const activityService = {
     }
   },
 
-  // Atualizar atividade
   updateActivity: async (id, activityData) => {
     try {
       const response = await api.put(`/activities/${id}`, activityData);
@@ -104,7 +94,6 @@ export const activityService = {
     }
   },
 
-  // Deletar atividade
   deleteActivity: async (id) => {
     try {
       const response = await api.delete(`/activities/${id}`);

@@ -32,12 +32,10 @@ const HomeScreen = ({ navigation }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [deleteDialog, setDeleteDialog] = useState({ visible: false, pet: null });
 
-  // Carregar pets ao montar o componente
   useEffect(() => {
     loadPets();
   }, []);
 
-  // Filtrar pets quando mudar a busca ou filtro
   useEffect(() => {
     filterPets();
   }, [searchQuery, selectedFilter, pets]);
@@ -59,12 +57,10 @@ const HomeScreen = ({ navigation }) => {
   const filterPets = () => {
     let filtered = pets;
 
-    // Filtrar por espécie
     if (selectedFilter !== 'all') {
       filtered = filtered.filter(pet => pet.species === selectedFilter);
     }
 
-    // Filtrar por busca
     if (searchQuery) {
       filtered = filtered.filter(pet =>
         pet.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

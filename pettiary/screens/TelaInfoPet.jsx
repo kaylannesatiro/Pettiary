@@ -14,7 +14,6 @@ import PetHeader from '../components/ui/CabecalhoPet';
 import InfoTag from '../components/ui/EtiquetaInfo';
 import Button from '../components/ui/Botao';
 
-// Função para formatar idade do pet
 function formatAge(age) {
   if (!age) return 'Não informado';
   if (typeof age === 'string') return age;

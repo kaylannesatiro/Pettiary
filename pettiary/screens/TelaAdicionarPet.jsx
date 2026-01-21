@@ -6,20 +6,16 @@ import * as ImagePicker from 'expo-image-picker';
 import { usePets } from '../components/contexts/Pets.Contexto';
 
 const BREEDS = [
-  // Cachorros
   'Akita', 'Beagle', 'Bichon Frisé', 'Border Collie', 'Boxer', 'Bulldog Francês', 'Bulldog Inglês',
   'Chihuahua', 'Chow Chow', 'Cocker Spaniel', 'Dachshund (Salsicha)', 'Dálmata', 'Doberman',
   'Fila Brasileiro', 'Golden Retriever', 'Husky Siberiano', 'Jack Russell Terrier', 'Labrador',
   'Lhasa Apso', 'Lulu da Pomerânia', 'Maltês', 'Mastiff', 'Pastor Alemão', 'Pastor Australiano',
   'Pinscher', 'Pit Bull', 'Poodle', 'Pug', 'Rottweiler', 'Schnauzer', 'Shih Tzu', 'Spitz Alemão',
   'Staffordshire', 'Teckel', 'Terrier Brasileiro', 'Vira-lata', 'Weimaraner', 'Yorkshire',
-  // Gatos
   'Abissínio', 'Angorá', 'Bengal', 'Birmanês', 'British Shorthair', 'Chartreux', 'Cornish Rex',
   'Devon Rex', 'Exótico', 'Himalaio', 'Maine Coon', 'Manx', 'Mau Egípcio', 'Norueguês da Floresta',
   'Persa', 'Ragdoll', 'Russo Azul', 'Savannah', 'Scottish Fold', 'Siamês', 'Sphynx', 'SRD (Sem Raça Definida)',
-  'Tonquinês', 'Turkish Angora',
-  // Outros
-  'Coelho', 'Hamster', 'Porquinho da Índia', 'Chinchila', 'Ferret', 'Papagaio', 'Calopsita',
+  'Tonquinês', 'Turkish Angora','Coelho', 'Hamster', 'Porquinho da Índia', 'Chinchila', 'Ferret', 'Papagaio', 'Calopsita',
   'Periquito', 'Arara', 'Canário', 'Tartaruga', 'Iguana'
 ].sort();
 

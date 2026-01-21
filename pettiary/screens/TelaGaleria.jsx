@@ -34,7 +34,6 @@ const GalleryScreen = ({ navigation, photos, setPhotos }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
-    // Não precisa mais carregar fotos, elas vêm do App.js
   }, []);
 
   const pickImageFromGallery = async () => {

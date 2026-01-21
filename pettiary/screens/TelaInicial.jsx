@@ -89,7 +89,6 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
   };
 
   const handleSelectPet = (pet) => {
-    // Se for anotação, abre a tela de notas
     if (selectedAction.type === 'anotacao') {
       setModalVisible(false);
       if (onOpenNotes) {
@@ -98,7 +97,6 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
       return;
     }
 
-    // Para outros tipos, marca direto
     const today = new Date();
     const currentDay = today.getDate();
     const dayOfWeek = today.getDay();
@@ -117,7 +115,6 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
         let updatedData = { ...petData };
         
         if (selectedAction.type === 'medicacao') {
-          // Marcar no calendario
           const currentEvents = petData.eventos[currentDay] || [];
           if (!currentEvents.includes('medicacao')) {
             updatedData.eventos = {
@@ -126,7 +123,6 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
             };
           }
         } else {
-          // Marcar nas atividades semanais (alimentacao, passeio)
           const newArray = [...petData[selectedAction.type]];
           newArray[dayOfWeek] = true;
           updatedData[selectedAction.type] = newArray;

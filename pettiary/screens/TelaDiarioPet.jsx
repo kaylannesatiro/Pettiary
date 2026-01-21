@@ -30,14 +30,12 @@ const PetDiaryScreen = ({ petId, petName = 'Lua', onBack, petEvents = {}, setPet
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Carregar dados do pet quando mudar o petId
   useEffect(() => {
     if (petEvents[petId]) {
       const loadedData = petEvents[petId];
       setDiaryData(loadedData);
       setCurrentMonth(new Date(loadedData.currentMonth || today.toISOString()));
     } else {
-      // Pet novo, resetar dados
       const newData = {
         alimentacao: [false, false, false, false, false, false, false],
         passeio: [false, false, false, false, false, false, false],

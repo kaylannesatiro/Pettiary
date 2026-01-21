@@ -1,297 +1,182 @@
-# 🐾 Pettiary - Diário de Pets
+<div align="center">
+  
+# 🐾 Pettiary
 
-Aplicativo mobile para gerenciar informações e atividades dos seus pets, construído com React Native e Material Design 3.
+<p align="center">
+  <img src="https://img.shields.io/badge/React_Native-0.81.5-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/Expo-~54.0-000020?style=for-the-badge&logo=expo&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Material_Design_3-9B7653?style=for-the-badge&logo=material-design&logoColor=white" />
+</p>
+</div>
 
-## 📱 Frontend (React Native)
+---
 
-### Estrutura de Pastas
+## 🎯 Sobre o Projeto
 
-```
-pettiary/
-├── App.js                      # Ponto de entrada do app
-├── package.json               # Dependências do frontend
-├── screens/                   # Telas do aplicativo
-│   └── HomeScreen.jsx        # Tela inicial com lista de pets
-├── components/               # Componentes reutilizáveis
-│   ├── display/             # Componentes de visualização
-│   │   ├── Card.jsx         # Card genérico (original)
-│   │   ├── PetCard.jsx      # Card de pet individual
-│   │   ├── ActivityCard.jsx # Card de atividade
-│   │   └── StatCard.jsx     # Card de estatísticas
-│   ├── inputs/              # Componentes de entrada
-│   │   └── SearchBar.jsx    # Barra de busca (original)
-│   ├── ui/                  # Componentes de UI
-│   │   ├── Button.jsx       # Botão genérico (original)
-│   │   ├── CustomButton.jsx # Botão customizado MD3
-│   │   ├── FloatingActionButton.jsx # FAB do Material Design
-│   │   └── ConfirmDialog.jsx # Dialog de confirmação
-│   ├── navigation/          # Componentes de navegação
-│   │   ├── Menu.jsx        # Menu (original)
-│   │   └── Header.jsx      # Header com AppBar MD3
-│   └── modules/            # Módulos complexos
-│       └── Calendar.jsx    # Calendário (original)
-├── services/               # Serviços de API
-│   ├── api.js             # Configuração do Axios
-│   └── petService.js      # Serviços de pets e atividades
-└── assets/                # Imagens e recursos
-```
+O **Pettiary** é um aplicativo mobile desenvolvido com React Native e Expo, projetado para ajudar tutores a organizar e acompanhar todos os aspectos da vida dos seus pets. Com uma interface moderna baseada no Material Design 3, o app oferece uma experiência intuitiva e visualmente agradável.
 
-### 🎨 Componentes Criados
+### 💡 Por que usar o Pettiary?
 
-#### 1. **PetCard** (`components/display/PetCard.jsx`)
-- Exibe informações do pet (foto, nome, raça, idade)
-- Botões de edição e exclusão
-- Ícone automático baseado na espécie
-- Borda colorida customizável
+- 📅 **Nunca mais esqueça compromissos** - Calendário integrado com lembretes de vacinas, consultas e medicamentos
+- 📸 **Memórias organizadas** - Galeria personalizada para cada pet
+- 📝 **Diário completo** - Registre atividades, notas e acompanhe o histórico
+- 👥 **Múltiplos pets** - Gerencie todos os seus pets em um só lugar
 
-#### 2. **ActivityCard** (`components/display/ActivityCard.jsx`)
-- Card para atividades (alimentação, passeio, veterinário, etc.)
-- Checkbox para marcar como concluída
-- Chip colorido por tipo de atividade
-- Ícones específicos para cada tipo
+---
 
-#### 3. **StatCard** (`components/display/StatCard.jsx`)
-- Cards de estatísticas com ícones
-- Barra de progresso opcional
-- Cores customizáveis
+## 🛠 Tecnologias
 
-#### 4. **Header** (`components/navigation/Header.jsx`)
-- AppBar do Material Design 3
-- Menu de opções opcional
-- Suporte a subtítulo e botão voltar
+### Frontend
 
-#### 5. **FloatingActionButton** (`components/ui/FloatingActionButton.jsx`)
-- FAB com múltiplas ações
-- Suporte a labels
-- Animações do Material Design
+<table>
+  <tr>
+    <td><b>Core</b></td>
+    <td>
+      React Native 0.81.5 • 
+      Expo ~54.0 • 
+      React 19.1.0
+    </td>
+  </tr>
+  <tr>
+    <td><b>UI/UX</b></td>
+    <td>
+      React Native Paper 5.14.5 (Material Design 3) • 
+      React Native Vector Icons • 
+      Expo Image Picker
+    </td>
+  </tr>
+  <tr>
+    <td><b>Navegação</b></td>
+    <td>
+      React Navigation 6.1.10 • 
+      Bottom Tabs • 
+      Safe Area Context
+    </td>
+  </tr>
+  <tr>
+    <td><b>Integração</b></td>
+    <td>
+      Axios • 
+      Async Storage • 
+      Google Generative AI (Gemini)
+    </td>
+  </tr>
+</table>
 
-#### 6. **ConfirmDialog** (`components/ui/ConfirmDialog.jsx`)
-- Modal de confirmação
-- Ações de confirmar/cancelar
+### Backend
 
-### 🚀 Como Executar o Frontend
+<table>
+  <tr>
+    <td><b>Servidor</b></td>
+    <td>Node.js • Express 4.18.2</td>
+  </tr>
+  <tr>
+    <td><b>Middleware</b></td>
+    <td>CORS • Body Parser</td>
+  </tr>
+  <tr>
+    <td><b>Desenvolvimento</b></td>
+    <td>Nodemon</td>
+  </tr>
+</table>
+
+---
+
+## 📦 Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado em sua máquina:
+
+- **Node.js** (versão 16 ou superior) - [Download](https://nodejs.org/)
+- **npm** ou **yarn** - Gerenciador de pacotes
+- **Expo CLI** - `npm install -g expo-cli`
+- **Git** - [Download](https://git-scm.com/)
+
+### Para testar no dispositivo móvel:
+- **Expo Go** - Disponível na [Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent) e [App Store](https://apps.apple.com/app/expo-go/id982107779)
+
+### Para emuladores (opcional):
+- **Android Studio** (para emulador Android) - [Download](https://developer.android.com/studio)
+
+---
+
+## 🚀 Instalação
+
+### 1. Clone o repositório
 
 ```bash
-# Instalar dependências
-npm install
-
-# Iniciar o Expo
-npm start
-
-# Ou executar diretamente
-npm run android  # Para Android
-npm run ios      # Para iOS
-npm run web      # Para Web
+git clone https://github.com/seu-usuario/pettiary.git
+cd pettiary
 ```
 
-### ⚙️ Configuração da API
+### 2. Instale as dependências do Frontend
 
-Edite o arquivo `services/api.js` para configurar o endereço do backend:
+```bash
+# Na raiz do projeto
+npm install
+```
 
-```javascript
-// Para emulador Android
-const API_BASE_URL = 'http://10.0.2.2:3000/api';
+### 3. Instale as dependências do Backend
 
-// Para dispositivo físico (use o IP do seu computador)
-const API_BASE_URL = 'http://192.168.x.x:3000/api';
-
-// Para iOS ou Web
-const API_BASE_URL = 'http://localhost:3000/api';
+```bash
+cd backend
+npm install
+cd ..
 ```
 
 ---
 
-## 🖥️ Backend (Node.js + Express)
+## ▶️ Como Executar
 
-### Estrutura de Pastas
-
-```
-backend/
-├── server.js              # Servidor Express
-├── package.json          # Dependências do backend
-├── models/              # Modelos de dados
-│   ├── Pet.js          # Modelo de Pet
-│   └── Activity.js     # Modelo de Atividade
-├── controllers/        # Lógica de negócio
-│   ├── petController.js
-│   └── activityController.js
-├── routes/            # Rotas da API
-│   ├── petRoutes.js
-│   └── activityRoutes.js
-└── README.md         # Documentação da API
-```
-
-### 🚀 Como Executar o Backend
+### 🔧 Iniciando o Backend
 
 ```bash
-# Navegar para a pasta do backend
+# Entre na pasta do backend
 cd backend
 
-# Instalar dependências
-npm install
-
-# Iniciar em modo desenvolvimento (com auto-reload)
+# Inicie o servidor
+npm start
+# ou para modo de desenvolvimento com auto-reload
 npm run dev
 
-# Ou iniciar em modo produção
+# O servidor estará rodando em http://localhost:3000
+```
+
+### 📱 Iniciando o Frontend
+
+Em um **novo terminal**, na pasta raiz do projeto:
+
+```bash
+# Inicie o Expo
 npm start
 ```
 
-O servidor iniciará em `http://localhost:3000`
+Após executar o comando, você verá um QR Code no terminal. Escolha uma das opções:
 
-### 📚 API Endpoints
+#### Opção 1: Dispositivo Físico (Recomendado)
+1. Abra o app **Expo Go** no seu celular
+2. Escaneie o QR Code exibido no terminal
+3. Aguarde o app carregar
 
-#### Pets
-- `GET /api/pets` - Listar todos os pets
-- `GET /api/pets/:id` - Buscar pet por ID
-- `POST /api/pets` - Criar novo pet
-- `PUT /api/pets/:id` - Atualizar pet
-- `DELETE /api/pets/:id` - Deletar pet
+#### Opção 2: Emuladores
+```bash
+# Android
+npm run android
 
-#### Atividades
-- `GET /api/activities` - Listar atividades
-- `GET /api/activities?petId=xxx` - Filtrar por pet
-- `POST /api/activities` - Criar atividade
-- `PATCH /api/activities/:id/toggle` - Marcar como concluída
-- `PUT /api/activities/:id` - Atualizar atividade
-- `DELETE /api/activities/:id` - Deletar atividade
+# iOS (apenas macOS)
+npm run ios
 
----
-
-## 🎨 Material Design 3
-
-O app utiliza `react-native-paper` v5+ com Material Design 3:
-
-### Cores do Tema
-- **Primary:** #6200EE (Roxo)
-- **Secondary:** #03DAC6 (Ciano)
-- **Tertiary:** #FF6B35 (Laranja)
-- **Error:** #B00020 (Vermelho)
-- **Background:** #F5F5F5 (Cinza claro)
-
-### Componentes Utilizados
-- Card (elevated mode)
-- FAB (Floating Action Button)
-- Chip (filtros)
-- Searchbar
-- Snackbar
-- Modal/Portal
-- Avatar
-- IconButton
-- ProgressBar
-- Appbar
+# Web
+npm run web
+```
 
 ---
 
-## 🔄 Fluxo de Dados
+<div align="center">
 
-1. **Frontend** faz requisição via `petService.js`
-2. **Axios** envia request para o backend
-3. **Express** roteia para o controller apropriado
-4. **Controller** executa lógica e manipula dados
-5. **Response** retorna dados para o frontend
-6. **UI** atualiza com os novos dados
+<p>Desenvolvido com ❤️ e 🐾 por <b>Carla</b> e <b>Kaylanne</b></p>
 
----
+</div>
 
-## 📦 Dependências Principais
 
-### Frontend
-- `expo` - Framework React Native
-- `react-native-paper` - Componentes Material Design 3
-- `axios` - Cliente HTTP
-- `react-native-vector-icons` - Ícones
-- `@react-navigation/native` - Navegação (preparado)
 
-### Backend
-- `express` - Framework web
-- `cors` - Middleware para CORS
-- `body-parser` - Parse de requisições
-- `uuid` - Geração de IDs únicos
-- `nodemon` - Auto-reload (dev)
-
----
-
-## 🚧 Próximos Passos
-
-### Frontend
-1. ✅ Tela inicial com lista de pets
-2. ⏳ Tela de detalhes do pet
-3. ⏳ Tela de adicionar/editar pet
-4. ⏳ Tela de atividades
-5. ⏳ Navegação completa com tabs
-6. ⏳ Persistência local (AsyncStorage)
-7. ⏳ Upload de fotos
-
-### Backend
-1. ✅ CRUD de pets
-2. ✅ CRUD de atividades
-3. ⏳ Banco de dados real (MongoDB/PostgreSQL)
-4. ⏳ Autenticação de usuários
-5. ⏳ Upload de imagens
-6. ⏳ Notificações push
-7. ⏳ Lembretes de atividades
-
----
-
-## 🎯 Recursos Implementados
-
-### ✅ Funcionalidades Atuais
-- Lista de pets com cards Material Design 3
-- Busca por nome ou raça
-- Filtros por espécie (todos, cães, gatos, pássaros)
-- Estatísticas (total de pets por espécie)
-- Pull to refresh
-- Confirmação antes de deletar
-- Snackbar para feedback
-- FAB com ações rápidas
-- API RESTful completa
-- Integração frontend-backend
-
-### 🎨 UI/UX
-- Design responsivo
-- Cores por categoria
-- Animações suaves
-- Estados de loading
-- Tratamento de erros
-- Empty states
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-- **React Native** - Framework mobile
-- **Expo** - Toolchain e runtime
-- **Material Design 3** - Design system
-- **Node.js** - Runtime JavaScript
-- **Express.js** - Framework backend
-- **Axios** - Cliente HTTP
-- **REST API** - Arquitetura de API
-
----
-
-## 📱 Screenshots
-
-(Adicione screenshots aqui quando executar o app)
-
----
-
-## 🤝 Contribuindo
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
----
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido com ❤️ para amantes de pets!

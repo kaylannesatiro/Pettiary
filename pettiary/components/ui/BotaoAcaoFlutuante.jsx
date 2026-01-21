@@ -23,7 +23,6 @@ const FloatingActionButton = ({
           onStateChange={onStateChange}
           onPress={() => {
             if (open) {
-              // do nothing when closing
             }
           }}
           fabStyle={styles.fab}

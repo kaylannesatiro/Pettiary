@@ -27,12 +27,8 @@ const ConfigScreen = ({ onNavigate, userName, setUserName, profilePhoto, setProf
 
   const handleSaveProfile = async (newName) => {
     try {
-      // Simular salvamento do perfil
-      // const response = await userService.updateProfile(1, { name: newName });
-      // if (response.data.success) {
       setUserName(newName);
       Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
-      // }
     } catch (error) {
       console.error('Erro ao salvar perfil:', error);
       throw new Error('Erro ao salvar perfil');
@@ -41,11 +37,7 @@ const ConfigScreen = ({ onNavigate, userName, setUserName, profilePhoto, setProf
 
   const handleChangePassword = async (currentPassword, newPassword) => {
     try {
-      // Simular alteração de senha
-      // const response = await userService.changePassword(1, currentPassword, newPassword);
-      // if (response.data.success) {
       Alert.alert('Sucesso', 'Senha alterada com sucesso!');
-      // }
     } catch (error) {
       console.error('Erro ao alterar senha:', error);
       throw new Error(error.response?.data?.error || 'Erro ao alterar senha');

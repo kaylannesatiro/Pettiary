@@ -15,11 +15,8 @@ import { Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// ⚠️ IMPORTANTE: Adicione sua API Key aqui
-// Obtenha em: https://aistudio.google.com/
 const API_KEY = 'AIzaSyCCDvR0n6hQQ9f4fljzJClXPKqZBo_2y4E';
 
-// Inicializar o Google AI
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const ChatBotScreen = ({ onClose }) => {
@@ -36,7 +33,6 @@ const ChatBotScreen = ({ onClose }) => {
 
   const perguntarGemini = async (pergunta) => {
     try {
-      // Usar o modelo correto
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
       const prompt = `

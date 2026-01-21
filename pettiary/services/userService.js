@@ -1,7 +1,6 @@
 import api from './api';
 
 export const userService = {
-  // Obter perfil do usuário
   getProfile: async (userId = 1) => {
     try {
       const response = await api.get(`/users/profile/${userId}`);
@@ -12,7 +11,6 @@ export const userService = {
     }
   },
 
-  // Atualizar perfil
   updateProfile: async (userId = 1, data) => {
     try {
       const response = await api.put(`/users/profile/${userId}`, data);
@@ -23,7 +21,6 @@ export const userService = {
     }
   },
 
-  // Alterar senha
   changePassword: async (userId = 1, currentPassword, newPassword) => {
     try {
       const response = await api.put(`/users/password/${userId}`, {
