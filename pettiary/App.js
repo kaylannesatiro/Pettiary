@@ -13,6 +13,7 @@ import PetInfoScreen from './components/screen/PetInfoScreen';
 import PetDiaryScreen from './components/screen/PetDiaryScreen';
 import EditPetScreen from './components/screen/EditPetScreen';
 import AddPetScreen from './components/screen/AddPetScreen';
+import NotesScreen from './screens/NotesScreen';
 
 // Tema com cores EXATAS da imagem
 const theme = {
@@ -54,6 +55,7 @@ function AppContent() {
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
   const [petEvents, setPetEvents] = useState({});
+  const [selectedPetForNote, setSelectedPetForNote] = useState(null);
 
   const handleOpenPetInfo = (petId) => {
     setSelectedPet(petId);
@@ -98,6 +100,55 @@ function AppContent() {
   const handleBackFromAdd = () => {
     setCurrentScreen('animais');
   };
+
+  const handleOpenNotes = (pet) => {
+    setSelectedPetForNote(pet);
+    setCurrentScreen('notes');
+  };
+
+  const handleSaveNote = (pet, noteText) => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    
+    setPetEvents(prevEvents => {
+      const petData = prevEvents[pet.id] || {
+        alimentacao: Array(7).fill(false),
+        passeio: Array(7).fill(false),
+        anotacao: Array(7).fill(false),
+        eventos: {},
+        petName: pet.name,
+        currentMonth: today.getMonth(),
+        notes: []
+      };
+
+      const updatedAnotacao = [...petData.anotacao];
+      updatedAnotacao[dayOfWeek] = true;
+
+      const updatedNotes = petData.notes || [];
+      updatedNotes.push({
+        text: noteText,
+        date: today.toISOString(),
+        petName: pet.name
+      });
+
+      return {
+        ...prevEvents,
+        [pet.id]: {
+          ...petData,
+          anotacao: updatedAnotacao,
+          notes: updatedNotes
+        }
+      };
+    });
+
+    alert(`Anotação salva para ${pet.name}!`);
+    setCurrentScreen('inicial');
+  };
+
+  const handleBackFromNotes = () => {
+    setCurrentScreen('inicial');
+    setSelectedPetForNote(null);
+  };
   const renderScreen = () => {
     switch (currentScreen) {
       case 'configuracoes':
@@ -107,7 +158,7 @@ function AppContent() {
       case 'galeria':
         return <GalleryScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} photos={galleryPhotos} setPhotos={setGalleryPhotos} />;
       case 'diaryList':
-        return <DiaryListScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} />;
+        return <DiaryListScreen navigation={{ goBack: () => setCurrentScreen('inicial') }} petEvents={petEvents} />;
       case 'animais':
       case 'list':
         return (
@@ -153,9 +204,17 @@ function AppContent() {
             setPetEvents={setPetEvents}
           />
         );
+      case 'notes':
+        return (
+          <NotesScreen 
+            pet={selectedPetForNote}
+            onSave={handleSaveNote}
+            onBack={handleBackFromNotes}
+          />
+        );
       case 'inicial':
       default:
-        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} profilePhoto={profilePhoto} petEvents={petEvents} />;
+        return <InitialScreen onNavigate={setCurrentScreen} userName={userName} profilePhoto={profilePhoto} petEvents={petEvents} setPetEvents={setPetEvents} onOpenNotes={handleOpenNotes} />;
     }
   };
 

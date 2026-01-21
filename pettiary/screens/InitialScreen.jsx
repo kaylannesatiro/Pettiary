@@ -6,17 +6,23 @@ import {
   TouchableOpacity,
   StatusBar,
   Image,
+  Modal,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import { usePets } from '../components/contexts/Pets.Context';
 import EventCard from '../components/display/EventCard';
 import QuickActionButton from '../components/ui/QuickActionButton';
 import ActionButton from '../components/ui/ActionButton';
 import BottomNav from '../components/navigation/BottomNav';
 
-const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = {} }) => {
+const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = {}, setPetEvents, onOpenNotes }) => {
+  const { pets } = usePets();
   const [activeRoute, setActiveRoute] = useState('inicial');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedAction, setSelectedAction] = useState(null);
 
   const getUpcomingEvents = () => {
     const today = new Date();
@@ -67,14 +73,74 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
   const upcomingEvents = getUpcomingEvents();
 
   const quickActions = [
-    { icon: 'medication', label: 'Medicação', color: '#A0744F' },
-    { icon: 'description', label: 'Notas', color: '#A0744F' },
-    { icon: 'restaurant', label: 'Refeição', color: '#A0744F' },
-    { icon: 'directions-walk', label: 'Passeio', color: '#A0744F' },
+    { icon: 'medication', label: 'Medicação', color: '#A0744F', type: 'medicacao' },
+    { icon: 'description', label: 'Anotação', color: '#A0744F', type: 'anotacao' },
+    { icon: 'restaurant', label: 'Refeição', color: '#A0744F', type: 'alimentacao' },
+    { icon: 'directions-walk', label: 'Passeio', color: '#A0744F', type: 'passeio' },
   ];
 
-  const handleQuickAction = (label) => {
-    console.log('Ação rápida:', label);
+  const handleQuickAction = (action) => {
+    if (pets.length === 0) {
+      alert('Você precisa cadastrar um pet primeiro!');
+      return;
+    }
+    setSelectedAction(action);
+    setModalVisible(true);
+  };
+
+  const handleSelectPet = (pet) => {
+    // Se for anotação, abre a tela de notas
+    if (selectedAction.type === 'anotacao') {
+      setModalVisible(false);
+      if (onOpenNotes) {
+        onOpenNotes(pet);
+      }
+      return;
+    }
+
+    // Para outros tipos, marca direto
+    const today = new Date();
+    const currentDay = today.getDate();
+    const dayOfWeek = today.getDay();
+    
+    if (setPetEvents) {
+      setPetEvents(prevEvents => {
+        const petData = prevEvents[pet.id] || {
+          alimentacao: [false, false, false, false, false, false, false],
+          passeio: [false, false, false, false, false, false, false],
+          anotacao: [false, false, false, false, false, false, false],
+          eventos: {},
+          petName: pet.name,
+          currentMonth: today.toISOString(),
+        };
+
+        let updatedData = { ...petData };
+        
+        if (selectedAction.type === 'medicacao') {
+          // Marcar no calendario
+          const currentEvents = petData.eventos[currentDay] || [];
+          if (!currentEvents.includes('medicacao')) {
+            updatedData.eventos = {
+              ...petData.eventos,
+              [currentDay]: [...currentEvents, 'medicacao']
+            };
+          }
+        } else {
+          // Marcar nas atividades semanais (alimentacao, passeio)
+          const newArray = [...petData[selectedAction.type]];
+          newArray[dayOfWeek] = true;
+          updatedData[selectedAction.type] = newArray;
+        }
+
+        return {
+          ...prevEvents,
+          [pet.id]: updatedData
+        };
+      });
+    }
+    
+    setModalVisible(false);
+    alert(`${selectedAction.label} marcada para ${pet.name}!`);
   };
 
   const handleNavigation = (route) => {
@@ -88,6 +154,46 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <StatusBar barStyle="dark-content" backgroundColor="#E1D8CF" />
+      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Selecione um Pet</Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <MaterialIcons name="close" size={28} color="#563218" />
+              </TouchableOpacity>
+            </View>
+            
+            <FlatList
+              data={pets}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.petItem}
+                  onPress={() => handleSelectPet(item)}
+                  activeOpacity={0.7}
+                >
+                  {item.image ? (
+                    <Image source={item.image} style={styles.petItemImage} />
+                  ) : (
+                    <View style={styles.petItemImagePlaceholder}>
+                      <MaterialIcons name="pets" size={28} color="#563218" />
+                    </View>
+                  )}
+                  <Text style={styles.petItemName}>{item.name}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
@@ -126,7 +232,7 @@ const InitialScreen = ({ onNavigate, userName = 'CK', profilePhoto, petEvents = 
                   icon={action.icon}
                   label={action.label}
                   color={action.color}
-                  onPress={() => handleQuickAction(action.label)}
+                  onPress={() => handleQuickAction(action)}
                 />
               ))}
             </View>
@@ -278,6 +384,58 @@ const styles = StyleSheet.create({
   mainButtons: {
     marginTop: 20,
     gap: 4,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#E1D8CF',
+    borderRadius: 20,
+    padding: 20,
+    width: '85%',
+    maxHeight: '70%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#2C1810',
+  },
+  petItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#D5C0AB',
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  petItemImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
+  },
+  petItemImagePlaceholder: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#E1D8CF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  petItemName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#2C1810',
   },
 });
 

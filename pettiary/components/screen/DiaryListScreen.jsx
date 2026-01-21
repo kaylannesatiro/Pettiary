@@ -2,33 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePets } from '../contexts/Pets.Context';
 import PetHeader from '../ui/PetHeader';
 
-// Diários organizados por data
-const diaryEntriesByDate = {
-  '20/01/2026': [
-    {
-      id: '1',
-      image: { uri: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80' },
-      text: 'Lua comeu seu lanche',
-    },
-    {
-      id: '2',
-      image: { uri: 'https://images.unsplash.com/photo-1518715308788-3005759c41c8?auto=format&fit=crop&w=400&q=80' },
-      text: 'Thor ganhou uma flor',
-    },
-  ],
-  '19/01/2026': [
-    {
-      id: '3',
-      image: { uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80' },
-      text: 'Mimi brincou no jardim',
-    },
-  ],
-};
-
-const DiaryListScreen = ({ navigation }) => {
+const DiaryListScreen = ({ navigation, petEvents = {} }) => {
   const insets = useSafeAreaInsets();
+  const { pets } = usePets();
   const today = new Date();
   const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
   const [date, setDate] = useState(formattedDate);
@@ -50,19 +29,125 @@ const DiaryListScreen = ({ navigation }) => {
     setDate(formatted);
   };
 
-  // Filtrar entradas do diário pela data selecionada
+  // Gerar entradas do diário baseado nos petEvents
   const currentEntries = useMemo(() => {
-    return diaryEntriesByDate[date] || [];
-  }, [date]);
+    const entries = [];
+    const selectedDate = new Date(currentDate);
+    const selectedDay = selectedDate.getDate();
+    const selectedDayOfWeek = selectedDate.getDay();
+    const selectedMonth = selectedDate.getMonth();
+    const selectedYear = selectedDate.getFullYear();
 
-  const renderEntry = ({ item }) => (
-    <View style={styles.cardPet}>
-      <View style={styles.imageContainer}>
-        <Image source={item.image} style={styles.imagePet} resizeMode="cover" />
+    Object.entries(petEvents).forEach(([petId, petData]) => {
+      const pet = pets.find(p => p.id === petId);
+      if (!pet) return;
+
+      // Verificar eventos do calendário (medicação, vacinação, etc) para o dia específico
+      if (petData.eventos && petData.eventos[selectedDay]) {
+        const eventMonth = new Date(petData.currentMonth).getMonth();
+        const eventYear = new Date(petData.currentMonth).getFullYear();
+        
+        // Só mostrar se for o mesmo mês/ano
+        if (eventMonth === selectedMonth && eventYear === selectedYear) {
+          petData.eventos[selectedDay].forEach((eventType, idx) => {
+            const eventLabels = {
+              medicacao: 'tomou medicação',
+              vacinacao: 'tomou vacina',
+              veterinario: 'foi ao veterinário',
+              banho: 'tomou banho'
+            };
+            
+            entries.push({
+              id: `${petId}-${eventType}-${selectedDay}-${idx}`,
+              petId: pet.id,
+              petName: pet.name,
+              petImage: pet.image,
+              text: `${pet.name} ${eventLabels[eventType] || eventType}`,
+              type: 'event',
+              date: selectedDate.toISOString()
+            });
+          });
+        }
+      }
+
+      // Verificar atividades semanais (alimentação, passeio) para o dia da semana
+      if (petData.alimentacao && petData.alimentacao[selectedDayOfWeek]) {
+        entries.push({
+          id: `${petId}-alimentacao-${selectedDay}`,
+          petId: pet.id,
+          petName: pet.name,
+          petImage: pet.image,
+          text: `${pet.name} comeu`,
+          type: 'activity',
+          date: selectedDate.toISOString()
+        });
+      }
+
+      if (petData.passeio && petData.passeio[selectedDayOfWeek]) {
+        entries.push({
+          id: `${petId}-passeio-${selectedDay}`,
+          petId: pet.id,
+          petName: pet.name,
+          petImage: pet.image,
+          text: `${pet.name} passeou`,
+          type: 'activity',
+          date: selectedDate.toISOString()
+        });
+      }
+
+      // Verificar anotações
+      if (petData.notes && petData.notes.length > 0) {
+        petData.notes.forEach((note, idx) => {
+          const noteDate = new Date(note.date);
+          if (
+            noteDate.getDate() === selectedDay &&
+            noteDate.getMonth() === selectedMonth &&
+            noteDate.getFullYear() === selectedYear
+          ) {
+            entries.push({
+              id: `${petId}-note-${idx}`,
+              petId: pet.id,
+              petName: pet.name,
+              petImage: pet.image,
+              text: `Nota de ${pet.name}: ${note.text}`,
+              type: 'note',
+              date: note.date
+            });
+          }
+        });
+      }
+    });
+
+    // Ordenar por data (mais recente primeiro)
+    return entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }, [currentDate, petEvents, pets]);
+
+  const renderEntry = ({ item }) => {
+    // Determinar fonte da imagem
+    let imageSource = null;
+    if (item.petImage) {
+      if (typeof item.petImage === 'string') {
+        imageSource = { uri: item.petImage };
+      } else {
+        imageSource = item.petImage;
+      }
+    }
+
+    return (
+      <View style={styles.cardPet}>
+        <View style={styles.imageContainer}>
+          {imageSource ? (
+            <Image source={imageSource} style={styles.imagePet} resizeMode="cover" />
+          ) : (
+            <Ionicons name="paw" size={64} color="#A0744F" />
+          )}
+        </View>
+        <Text style={[styles.captionPet, item.type === 'note' && styles.noteText]} numberOfLines={item.type === 'note' ? 3 : 1}>
+          {item.text}
+        </Text>
       </View>
-      <Text style={styles.captionPet}>{item.text}</Text>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={[styles.wrapper, { paddingTop: insets.top }]}> 
@@ -209,6 +294,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 2,
     fontFamily: 'Outfit_300Light',
+  },
+  noteText: {
+    fontSize: 14,
+    textAlign: 'left',
+    paddingHorizontal: 8,
   },
 });
 
